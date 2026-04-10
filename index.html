@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Vantage - Real Estate Investment Advisory Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <img src="logo.png" alt="Quick Vantage Logo" class="logo-img">
+                <span class="logo-text">Quick Vantage</span>
+            </div>
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#properties">Properties</a></li>
+                <li><a href="#value">Why Us</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#" class="cta-button nav-btn">Sign In</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Real Estate Investment Advisory, Simplified</h1>
+            <p>Discover high-quality investment opportunities, analyze deals in minutes, and scale your real estate portfolio with intelligent market insights and valuation tools.</p>
+            <div class="hero-buttons">
+                <button class="cta-button primary">Start Free Trial</button>
+                <button class="cta-button secondary">Watch Demo</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="section-container">
+            <h2 class="section-title">Powerful Features for Smart Investors</h2>
+            <p class="section-subtitle">Everything you need to source, evaluate, and close deals faster</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📍</div>
+                    <h3>Property Search & Database</h3>
+                    <p>Access MLS and public records. Filter by investment criteria, ROI targets, location, and asset class. Find deals that match your portfolio strategy.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Valuation & Appraisal</h3>
+                    <p>Get instant property valuations using automated valuation models (AVM) and comparable property analysis. Generate professional valuation reports in minutes.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Market Intelligence</h3>
+                    <p>Heat maps, neighborhood analytics, market trends, and forecasts. Understand pricing patterns, rental yields, and growth opportunities by submarket.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Deal Pipeline Management</h3>
+                    <p>Organize and score sourced deals. Track from sourcing through closing with automated workflows, notifications, and deal analytics.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Financial Modeling</h3>
+                    <p>Pro-forma models, financing calculators, cash flow projections, and ROI analysis. Model scenarios in seconds and compare investment options.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚖️</div>
+                    <h3>Legal & Documentation</h3>
+                    <p>Document templates, e-signature integration, legal checklists, and attorney/title company referrals to streamline your closing process.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Property Listings Section -->
+    <section id="properties" class="properties">
+        <div class="section-container">
+            <h2 class="section-title">Featured Properties</h2>
+            <p class="section-subtitle">Explore our curated selection of investment opportunities</p>
+            
+            <div class="properties-grid">
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=250&fit=crop" alt="Property 1">
+                        <span class="property-badge">Featured</span>
+                    </div>
+                    <div class="property-content">
+                        <h3>Modern Apartment Complex</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> New York, NY</p>
+                        <div class="property-details">
+                            <div class="detail">
+                                <span class="label">Price:</span>
+                                <span class="value">$450,000</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">ROI:</span>
+                                <span class="value">8.5%</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">Cap Rate:</span>
+                                <span class="value">6.2%</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">Type:</span>
+                                <span class="value">Multi-Family</span>
+                            </div>
+                        </div>
+                        <button class="cta-button secondary">View Details</button>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=250&fit=crop" alt="Property 2">
+                        <span class="property-badge hot">Hot Deal</span>
+                    </div>
+                    <div class="property-content">
+                        <h3>Commercial Office Space</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Los Angeles, CA</p>
+                        <div class="property-details">
+                            <div class="detail">
+                                <span class="label">Price:</span>
+                                <span class="value">$650,000</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">ROI:</span>
+                                <span class="value">9.2%</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">Cap Rate:</span>
+                                <span class="value">7.1%</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">Type:</span>
+                                <span class="value">Commercial</span>
+                            </div>
+                        </div>
+                        <button class="cta-button secondary">View Details</button>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=250&fit=crop" alt="Property 3">
+                        <span class="property-badge">Pre-Completion</span>
+                    </div>
+                    <div class="property-content">
+                        <h3>Single Family Home</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Austin, TX</p>
+                        <div class="property-details">
+                            <div class="detail">
+                                <span class="label">Price:</span>
+                                <span class="value">$325,000</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">ROI:</span>
+                                <span class="value">7.8%</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">Cap Rate:</span>
+                                <span class="value">5.9%</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">Type:</span>
+                                <span class="value">Residential</span>
+                            </div>
+                        </div>
+                        <button class="cta-button secondary">View Details</button>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="./images/10.jpg" alt="Property 4">
+                        <span class="property-badge">Off-Market</span>
+                    </div>
+                    <div class="property-content">
+                        <h3>Retail Shopping Center</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Miami, FL</p>
+                        <div class="property-details">
+                            <div class="detail">
+                                <span class="label">Price:</span>
+                                <span class="value">$850,000</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">ROI:</span>
+                                <span class="value">10.1%</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">Cap Rate:</span>
+                                <span class="value">8.3%</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">Type:</span>
+                                <span class="value">Retail</span>
+                            </div>
+                        </div>
+                        <button class="cta-button secondary">View Details</button>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="./images/1.jpg" alt="Property 5">
+                        <span class="property-badge">Featured</span>
+                    </div>
+                    <div class="property-content">
+                        <h3>Industrial Warehouse</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Chicago, IL</p>
+                        <div class="property-details">
+                            <div class="detail">
+                                <span class="label">Price:</span>
+                                <span class="value">$520,000</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">ROI:</span>
+                                <span class="value">8.9%</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">Cap Rate:</span>
+                                <span class="value">6.8%</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">Type:</span>
+                                <span class="value">Industrial</span>
+                            </div>
+                        </div>
+                        <button class="cta-button secondary">View Details</button>
+                    </div>
+                </div>
+
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=250&fit=crop" alt="Property 6">
+                        <span class="property-badge hot">Hot Deal</span>
+                    </div>
+                    <div class="property-content">
+                        <h3>Luxury Resort Property</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Denver, CO</p>
+                        <div class="property-details">
+                            <div class="detail">
+                                <span class="label">Price:</span>
+                                <span class="value">$1,200,000</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">ROI:</span>
+                                <span class="value">11.5%</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">Cap Rate:</span>
+                                <span class="value">9.2%</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">Type:</span>
+                                <span class="value">Hospitality</span>
+                            </div>
+                        </div>
+                        <button class="cta-button secondary">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Proposition -->
+    <section id="value" class="value-prop">
+        <div class="section-container">
+            <div class="value-prop-content">
+                <div class="value-prop-text">
+                    <h2>Why Quick Vantage?</h2>
+                    <ul class="value-prop-list">
+                        <li>Source and score deals 10x faster than traditional methods</li>
+                        <li>Accurate valuations powered by AI and real market data</li>
+                        <li>Market intelligence unavailable elsewhere – proprietary analytics</li>
+                        <li>Seamless deal workflow from discovery to closing</li>
+                        <li>Portfolio tracking and performance benchmarking</li>
+                        <li>Built for individual investors and institutional funds</li>
+                        <li>14-day free trial – no credit card required</li>
+                    </ul>
+                    <button class="cta-button primary">Get Started Free</button>
+                </div>
+                <div class="value-prop-image">
+                    <div class="placeholder">📊 Dashboard Preview</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="section-container">
+            <h2 class="section-title">What Investors Say</h2>
+            <p class="section-subtitle">Trusted by hundreds of real estate investors nationwide</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"Quick Vantage cut our deal evaluation time from 2 weeks to 2 days. The valuations are spot-on, and the market insights are invaluable for our investment strategy."</p>
+                    <div class="testimonial-author">Sarah Chen</div>
+                    <div class="testimonial-role">Real Estate Investor, California</div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"The deal pipeline management system has transformed how our team sources and closes properties. We're now handling 3x more deals with the same staff."</p>
+                    <div class="testimonial-author">Marcus Rodriguez</div>
+                    <div class="testimonial-role">Investment Fund Manager, Texas</div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"The financial modeling tools are incredible. Being able to model multiple scenarios and compare them side-by-side has made me a much smarter investor."</p>
+                    <div class="testimonial-author">Jennifer Wu</div>
+                    <div class="testimonial-role">Portfolio Manager, New York</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="section-container">
+            <h2 class="section-title">Simple, Transparent Pricing</h2>
+            <p class="section-subtitle">Choose the plan that fits your investment strategy</p>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Starter</h3>
+                    <div class="price">$99</div>
+                    <div class="price-period">per month</div>
+                    <ul class="pricing-features">
+                        <li>Up to 50 properties</li>
+                        <li>Basic valuations</li>
+                        <li>Market data access</li>
+                        <li>Email support</li>
+                    </ul>
+                    <button class="cta-button secondary">Choose Plan</button>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="badge">Most Popular</div>
+                    <h3>Professional</h3>
+                    <div class="price">$299</div>
+                    <div class="price-period">per month</div>
+                    <ul class="pricing-features">
+                        <li>Unlimited properties</li>
+                        <li>Advanced AVM valuations</li>
+                        <li>Deal pipeline management</li>
+                        <li>Financial modeling</li>
+                        <li>Portfolio analytics</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <button class="cta-button primary">Choose Plan</button>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <div class="price">Custom</div>
+                    <div class="price-period">contact sales</div>
+                    <ul class="pricing-features">
+                        <li>Everything in Professional</li>
+                        <li>Custom integrations</li>
+                        <li>API access</li>
+                        <li>Dedicated account manager</li>
+                        <li>SLA guarantee</li>
+                    </ul>
+                    <button class="cta-button secondary">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="contact" class="cta-section">
+        <div class="section-container">
+            <h2>Ready to Transform Your Real Estate Investing?</h2>
+            <p>Join hundreds of investors using Quick Vantage to source, evaluate, and close deals faster.</p>
+            <button class="cta-button primary">Start Your Free Trial Today</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="section-container">
+            <!-- Newsletter Section -->
+            <div class="newsletter-section">
+                <h3>Subscribe to Our Newsletter</h3>
+                <p>Get the latest investment opportunities and market insights delivered to your inbox.</p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input 
+                        type="email" 
+                        placeholder="Enter your email" 
+                        required 
+                        class="newsletter-input"
+                    >
+                    <button type="submit" class="cta-button primary">Subscribe</button>
+                </form>
+                <p class="form-message" id="formMessage"></p>
+            </div>
+
+            <!-- Main Footer Content -->
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Quick Vantage</h4>
+                    <p>The all-in-one platform for real estate investment advisory and deal sourcing.</p>
+                    <!-- Contact Information -->
+                    <div class="contact-info">
+                        <p class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+1234567890">+1 (234) 567-8900</a>
+                        </p>
+                        <p class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@quickvantage.com">info@quickvantage.com</a>
+                        </p>
+                        <p class="contact-item">
+                            <i class="fab fa-whatsapp"></i>
+                            <a href="https://wa.me/1234567890">+1 (234) 567-8900</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Roadmap</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API Reference</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Community</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Social Media Section -->
+            <div class="social-media-section">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="https://facebook.com/quickvantage" target="_blank" class="social-icon" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://twitter.com/quickvantage" target="_blank" class="social-icon" title="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://instagram.com/quickvantage" target="_blank" class="social-icon" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://linkedin.com/company/quickvantage" target="_blank" class="social-icon" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://youtube.com/@quickvantage" target="_blank" class="social-icon" title="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="https://tiktok.com/@quickvantage" target="_blank" class="social-icon" title="TikTok">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="https://pinterest.com/quickvantage" target="_blank" class="social-icon" title="Pinterest">
+                        <i class="fab fa-pinterest-p"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Quick Vantage. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================
+         MODALS
+         ======================================== -->
+
+    <!-- Sign Up / Registration Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-header">
+                <h2>Create Your Account</h2>
+                <p>Join Quick Vantage and start discovering investment opportunities</p>
+            </div>
+            <form id="signupForm" class="auth-form">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="you@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="+1 (555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Min. 8 characters">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm password">
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a></label>
+                </div>
+                <button type="submit" class="cta-button primary modal-btn">Create Account</button>
+                <p class="form-footer">Already have an account? <a href="#" id="signinLink">Sign In</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div id="signinModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-header">
+                <h2>Sign In</h2>
+                <p>Welcome back to Quick Vantage</p>
+            </div>
+            <form id="signinForm" class="auth-form">
+                <div class="form-group">
+                    <label for="signinEmail">Email Address</label>
+                    <input type="email" id="signinEmail" name="email" required placeholder="you@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="signinPassword">Password</label>
+                    <input type="password" id="signinPassword" name="password" required placeholder="Enter your password">
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                    <label for="rememberMe">Remember me</label>
+                </div>
+                <button type="submit" class="cta-button primary modal-btn">Sign In</button>
+                <p class="form-footer">Don't have an account? <a href="#" id="signupLink">Sign Up</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Demo Modal -->
+    <div id="demoModal" class="modal">
+        <div class="modal-content modal-medium">
+            <button class="modal-close">&times;</button>
+            <div class="modal-header">
+                <h2>Watch Platform Demo</h2>
+                <p>See Quick Vantage in action</p>
+            </div>
+            <div class="demo-container">
+                <div class="video-placeholder">
+                    <i class="fas fa-play-circle"></i>
+                    <p>Demo Video</p>
+                </div>
+                <p class="demo-description">
+                    Discover how Quick Vantage helps investors find, evaluate, and close deals faster with AI-powered analytics and market intelligence.
+                </p>
+                <div class="demo-actions">
+                    <button class="cta-button primary" onclick="alert('Demo video player would load here')">▶ Play Demo</button>
+                    <button class="cta-button secondary" onclick="document.getElementById('demoModal').classList.remove('active'); openModal('signup');">Start Free Trial</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Property Details Modal -->
+    <div id="propertyModal" class="modal">
+        <div class="modal-content modal-property">
+            <button class="modal-close">&times;</button>
+            
+            <div class="property-modal-grid">
+                <div class="property-modal-left">
+                    <img id="propertyImage" src="" alt="Property" class="property-modal-image">
+                </div>
+                
+                <div class="property-modal-right">
+                    <h2 id="propertyTitle"></h2>
+                    <p id="propertyLocation" class="property-location"></p>
+                    
+                    <div class="property-badges">
+                        <span id="propertyType" class="badge"></span>
+                        <span id="propertyStatus" class="badge status"></span>
+                    </div>
+
+                    <div class="property-quick-info">
+                        <div class="info-item">
+                            <span class="label">Price</span>
+                            <span id="propertyPrice" class="value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">ROI</span>
+                            <span id="propertyROI" class="value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Cap Rate</span>
+                            <span id="propertyCapRate" class="value"></span>
+                        </div>
+                    </div>
+
+                    <p id="propertyDescription" class="property-description"></p>
+
+                    <div class="property-features-list">
+                        <h4>Key Features</h4>
+                        <ul id="propertyFeatures">
+                            <li>Modern architecture and design</li>
+                            <li>Strong tenant base</li>
+                            <li>Low vacancy rates</li>
+                            <li>High market demand</li>
+                        </ul>
+                    </div>
+
+                    <div class="property-modal-actions">
+                        <button class="cta-button primary" id="contactPropertyBtn">Request Info</button>
+                        <button class="cta-button secondary" id="scheduleViewBtn">Schedule Tour</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing Plan Modal -->
+    <div id="pricingModal" class="modal">
+        <div class="modal-content modal-medium">
+            <button class="modal-close">&times;</button>
+            <div class="modal-header">
+                <h2 id="planName"></h2>
+                <p id="planDescription"></p>
+            </div>
+
+            <div class="pricing-modal-body">
+                <div class="plan-price">
+                    <span class="price" id="planPrice"></span>
+                    <span class="period">/month</span>
+                </div>
+
+                <form id="planForm" class="plan-form">
+                    <div class="form-group">
+                        <label for="planEmail">Email Address</label>
+                        <input type="email" id="planEmail" name="email" required placeholder="you@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="planCompany">Company Name</label>
+                        <input type="text" id="planCompany" name="company" required placeholder="Your Company">
+                    </div>
+                    <div class="form-group">
+                        <label for="planTeamSize">Team Size</label>
+                        <select id="planTeamSize" name="teamSize" required>
+                            <option value="">Select team size</option>
+                            <option value="1">Just me</option>
+                            <option value="2-5">2-5 people</option>
+                            <option value="6-20">6-20 people</option>
+                            <option value="20+">20+ people</option>
+                        </select>
+                    </div>
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="planTerms" name="terms" required>
+                        <label for="planTerms">I agree to the Terms of Service</label>
+                    </div>
+                    <button type="submit" class="cta-button primary modal-btn">Start Free Trial</button>
+                </form>
+
+                <div class="plan-features">
+                    <h4>Included Features:</h4>
+                    <ul id="planFeaturesList">
+                        <li>✓ Property search and database</li>
+                        <li>✓ Valuation tools</li>
+                        <li>✓ Market analytics</li>
+                    </ul>
+                </div>
+
+                <p class="plan-footer">14-day free trial. No credit card required. Cancel anytime.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Message Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="success-icon">✓</div>
+            <h2 id="successTitle">Success!</h2>
+            <p id="successMessage"></p>
+            <button class="cta-button primary" id="successCloseBtn">Continue</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
