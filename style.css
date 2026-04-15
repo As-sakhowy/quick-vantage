@@ -1670,6 +1670,39 @@ body {
     .plan-price .price {
         font-size: 2rem;
     }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .modal-content {
+        padding: 0.75rem;
+    }
+
+    .property-modal-image {
+        height: 180px;
+    }
+
+    .property-quick-info {
+        grid-template-columns: 1fr;
+        padding: 0.5rem;
+    }
+
+    .info-item .value {
+        font-size: 1rem;
+    }
+
+    .plan-price .price {
+        font-size: 1.8rem;
+    }
 }
 
 /* ========================================
@@ -2064,5 +2097,124 @@ body {
 
     .detail .value {
         font-size: 0.9rem;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .feature-card {
+        padding: 1.5rem;
+    }
+    
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .testimonial-card {
+        padding: 1.5rem;
+    }
+}
+
+/* ========================================
+   FLOATING CONTACT BUTTONS
+   ======================================== */
+
+.floating-contact {
+    position: fixed;
+    bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    z-index: 999;
+    flex-direction: column;
+}
+
+.floating-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: var(--transition);
+    animation: beating 2s infinite;
+}
+
+.phone-btn {
+    left: 2rem;
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+.phone-btn:hover {
+    background: var(--primary-dark);
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(26, 181, 163, 0.4);
+}
+
+.whatsapp-btn {
+    right: 2rem;
+    background: #25d366;
+    color: var(--white);
+}
+
+.whatsapp-btn:hover {
+    background: #20ba5a;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+}
+
+@keyframes beating {
+    0%, 100% {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+}
+
+/* Responsive floating buttons */
+@media (max-width: 768px) {
+    .floating-contact {
+        bottom: 1.5rem;
+    }
+
+    .floating-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+
+    .phone-btn {
+        left: 1.5rem;
+    }
+
+    .whatsapp-btn {
+        right: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .floating-contact {
+        bottom: 1rem;
+    }
+
+    .floating-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+
+    .phone-btn {
+        left: 1rem;
+    }
+
+    .whatsapp-btn {
+        right: 1rem;
     }
 }
