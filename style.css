@@ -16,6 +16,8 @@
     --text-light: #64748b;
     --border-color: #e2e8f0;
     --success-color: #10b981;
+
+
     --error-color: #ef4444;
     
     --shadow-sm: 0 2px 10px rgba(26, 181, 163, 0.08);
@@ -103,6 +105,11 @@ body {
     border: 2px solid var(--primary-color);
 }
 
+.hero-buttons .cta-button.primary {
+    background: var(--accent-color);
+    color: var(--text-dark);
+    border: 2px solid var(--accent-color);
+}
 .cta-button.secondary:hover {
     background: var(--primary-color);
     color: var(--white);
@@ -1327,55 +1334,6 @@ body {
     text-decoration: underline;
 }
 
-/* ========================================
-   DEMO MODAL STYLES
-   ======================================== */
-
-.demo-container {
-    text-align: center;
-}
-
-.video-placeholder {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
-    color: var(--white);
-    padding: 3rem 2rem;
-    border-radius: 0.75rem;
-    margin-bottom: 1.5rem;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.video-placeholder:hover {
-    transform: scale(1.02);
-    box-shadow: 0 10px 30px rgba(26, 181, 163, 0.3);
-}
-
-.video-placeholder i {
-    font-size: 3rem;
-    display: block;
-    margin-bottom: 0.5rem;
-}
-
-.video-placeholder p {
-    font-size: 1.1rem;
-    font-weight: 600;
-}
-
-.demo-description {
-    color: var(--text-light);
-    margin-bottom: 1.5rem;
-    line-height: 1.7;
-}
-
-.demo-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-
-.demo-actions button {
-    padding: 0.9rem 1.5rem;
-}
 
 /* ========================================
    PROPERTY MODAL STYLES

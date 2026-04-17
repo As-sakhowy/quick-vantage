@@ -329,7 +329,7 @@ const modals = {
     property: document.getElementById('propertyModal'),
     pricing: document.getElementById('pricingModal'),
     success: document.getElementById('successModal'),
-    demo: document.getElementById('demoModal')
+
 };
 
 // Open modal
