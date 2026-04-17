@@ -1914,265 +1914,71 @@ body {
 }
 
 /* ========================================
-   RESPONSIVE UPDATES
+   AUTHENTICATION STYLES
    ======================================== */
 
-@media (max-width: 768px) {
-    .value-prop-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
-    .value-prop-image {
-        min-height: 300px;
-    }
-
-    .placeholder {
-        font-size: 2.5rem;
-    }
-
-    .properties-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.5rem;
-    }
-
-    .property-image {
-        height: 200px;
-    }
+.auth-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
 }
 
-@media (max-width: 600px) {
-    .value-prop {
-        padding: 2rem 1rem;
-    }
-
-    .value-prop-text h2 {
-        font-size: 1.6rem;
-    }
-
-    .value-prop-list li {
-        font-size: 0.9rem;
-        padding-left: 1.75rem;
-    }
-
-    .value-prop-image {
-        min-height: 250px;
-    }
-
-    .placeholder {
-        font-size: 2rem;
-    }
-
-    .properties-grid {
-        grid-template-columns: 1fr;
-        gap: 1.25rem;
-    }
-
-    .property-card {
-        border-radius: 0.75rem;
-    }
-
-    .property-image {
-        height: 180px;
-    }
-
-    .property-content {
-        padding: 1.25rem;
-    }
-
-    .property-content h3 {
-        font-size: 1.1rem;
-    }
-
-    .property-details {
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
-        margin-bottom: 1rem;
-        padding-bottom: 1rem;
-    }
-
-    .detail .label {
-        font-size: 0.75rem;
-    }
-
-    .detail .value {
-        font-size: 0.95rem;
-    }
-
-    .property-badge {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.7rem;
-    }
-}
-
-@media (max-width: 400px) {
-    .value-prop {
-        padding: 1.5rem 0.75rem;
-    }
-
-    .value-prop-text h2 {
-        font-size: 1.4rem;
-        margin-bottom: 1rem;
-    }
-
-    .value-prop-list {
-        margin-bottom: 1.5rem;
-    }
-
-    .value-prop-list li {
-        font-size: 0.85rem;
-        padding: 0.5rem 0;
-        padding-left: 1.5rem;
-    }
-
-    .value-prop-image {
-        min-height: 200px;
-    }
-
-    .placeholder {
-        font-size: 1.5rem;
-    }
-
-    .properties-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .property-image {
-        height: 160px;
-    }
-
-    .property-content {
-        padding: 1rem;
-    }
-
-    .property-details {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-        margin-bottom: 0.75rem;
-        padding-bottom: 0.75rem;
-    }
-
-    .detail .value {
-        font-size: 0.9rem;
-    }
-
-    .features-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-    
-    .feature-card {
-        padding: 1.5rem;
-    }
-    
-    .testimonials-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-    
-    .testimonial-card {
-        padding: 1.5rem;
-    }
-}
-
-/* ========================================
-   FLOATING CONTACT BUTTONS
-   ======================================== */
-
-.floating-contact {
-    position: fixed;
-    bottom: 2rem;
-    display: flex;
-    gap: 1rem;
-    z-index: 999;
-    flex-direction: column;
-}
-
-.floating-btn {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
+.auth-status {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    text-decoration: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: var(--transition);
-    animation: beating 2s infinite;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(26, 181, 163, 0.1);
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
 }
 
-.phone-btn {
-    left: 2rem;
-    background: var(--primary-color);
-    color: var(--white);
+.auth-status.authenticated {
+    background: rgba(16, 185, 129, 0.1);
 }
 
-.phone-btn:hover {
-    background: var(--primary-dark);
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(26, 181, 163, 0.4);
+.auth-status.unauthenticated {
+    background: rgba(239, 68, 68, 0.1);
 }
 
-.whatsapp-btn {
-    right: 2rem;
-    background: #25d366;
-    color: var(--white);
+.auth-status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #10b981;
+    animation: pulse 2s infinite;
 }
 
-.whatsapp-btn:hover {
-    background: #20ba5a;
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+.auth-status.unauthenticated .auth-status-indicator {
+    background: #ef4444;
 }
 
-@keyframes beating {
+@keyframes pulse {
     0%, 100% {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        opacity: 1;
     }
     50% {
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        opacity: 0.5;
     }
 }
 
-/* Responsive floating buttons */
-@media (max-width: 768px) {
-    .floating-contact {
-        bottom: 1.5rem;
-    }
-
-    .floating-btn {
-        width: 50px;
-        height: 50px;
-        font-size: 1.3rem;
-    }
-
-    .phone-btn {
-        left: 1.5rem;
-    }
-
-    .whatsapp-btn {
-        right: 1.5rem;
-    }
+.property-locked {
+    position: relative;
+    opacity: 0.6;
+    pointer-events: none;
 }
 
-@media (max-width: 480px) {
-    .floating-contact {
-        bottom: 1rem;
-    }
-
-    .floating-btn {
-        width: 45px;
-        height: 45px;
-        font-size: 1.1rem;
-    }
-
-    .phone-btn {
-        left: 1rem;
-    }
-
-    .whatsapp-btn {
-        right: 1rem;
-    }
+.property-locked::after {
+    content: '🔒 Sign in to view';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 10;
 }

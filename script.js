@@ -626,3 +626,320 @@ document.addEventListener('keydown', (e) => {
 });
 
 console.log('All modals and forms initialized successfully');
+
+// ========================================
+// AUTHENTICATION MANAGER
+// ========================================
+
+class AuthManager {
+    constructor() {
+        this.storageKey = 'quickVantageUser';
+        this.currentUser = this.loadUser();
+    }
+
+    // Check if user is logged in
+    isAuthenticated() {
+        try {
+            return this.currentUser !== null && this.currentUser !== undefined;
+        } catch (e) {
+            console.error('Error checking authentication:', e);
+            return false;
+        }
+    }
+
+    // Get current user
+    getCurrentUser() {
+        try {
+            return this.currentUser;
+        } catch (e) {
+            console.error('Error getting current user:', e);
+            return null;
+        }
+    }
+
+    // Sign up new user
+    signUp(userData) {
+        try {
+            // Validate required fields
+            if (!userData.fullName || !userData.email || !userData.phone || !userData.password) {
+                throw new Error('All fields are required');
+            }
+
+            const user = {
+                id: this.generateId(),
+                fullName: userData.fullName,
+                email: userData.email,
+                phone: userData.phone,
+                createdAt: new Date().toISOString(),
+                lastLogin: new Date().toISOString()
+            };
+
+            // Store in localStorage
+            localStorage.setItem(this.storageKey, JSON.stringify(user));
+            this.currentUser = user;
+
+            return user;
+        } catch (error) {
+            console.error('Sign up error:', error);
+            throw error;
+        }
+    }
+
+    // Sign in existing user
+    signIn(email, password) {
+        try {
+            // Validate inputs
+            if (!email || !password) {
+                throw new Error('Email and password are required');
+            }
+
+            // Simulate backend validation
+            const user = {
+                id: this.generateId(),
+                email: email,
+                lastLogin: new Date().toISOString()
+            };
+
+            localStorage.setItem(this.storageKey, JSON.stringify(user));
+            this.currentUser = user;
+
+            return user;
+        } catch (error) {
+            console.error('Sign in error:', error);
+            throw error;
+        }
+    }
+
+    // Sign out user
+    signOut() {
+        try {
+            localStorage.removeItem(this.storageKey);
+            this.currentUser = null;
+        } catch (error) {
+            console.error('Sign out error:', error);
+        }
+    }
+
+    // Load user from storage
+    loadUser() {
+        try {
+            const userJson = localStorage.getItem(this.storageKey);
+            return userJson ? JSON.parse(userJson) : null;
+        } catch (error) {
+            console.error('Error loading user:', error);
+            return null;
+        }
+    }
+
+    // Generate unique ID
+    generateId() {
+        return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+}
+
+// Create global instance
+const auth = new AuthManager();
+
+// ========================================
+// PROPERTY DETAILS AUTHENTICATION FLOW
+// ========================================
+
+// Handle View Details buttons with authentication check
+document.querySelectorAll('.property-card .cta-button.secondary').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Check if user is authenticated
+        if (!auth.isAuthenticated()) {
+            // Not logged in - show Sign In modal
+            console.log('User not authenticated. Redirecting to Sign In.');
+            closeAllModals();
+            openModal('signin');
+            
+            // Show a message to indicate they need to sign in
+            showNotification('Please sign in to view property details', 'info');
+            return;
+        }
+
+        // User is authenticated - show property details
+        const propertyTitle = btn.closest('.property-card').querySelector('h3').textContent;
+        const property = propertyData[propertyTitle] || propertyData['Modern Apartment Complex'];
+        
+        // Populate modal
+        document.getElementById('propertyTitle').textContent = propertyTitle;
+        document.getElementById('propertyLocation').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${property.location}`;
+        document.getElementById('propertyImage').src = property.image;
+        document.getElementById('propertyPrice').textContent = property.price;
+        document.getElementById('propertyROI').textContent = property.roi;
+        document.getElementById('propertyCapRate').textContent = property.capRate;
+        document.getElementById('propertyType').textContent = property.type;
+        document.getElementById('propertyStatus').textContent = property.status;
+        document.getElementById('propertyDescription').textContent = property.description;
+        
+        openModal('property');
+    });
+});
+
+// ========================================
+// ENHANCED SIGN UP / SIGN IN FLOWS
+// ========================================
+
+// Sign up form submission
+document.getElementById('signupForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    try {
+        const formData = new FormData(e.target);
+        const userData = {
+            fullName: formData.get('fullName'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            password: formData.get('password'),
+            confirmPassword: formData.get('confirmPassword')
+        };
+
+        // Validate passwords match
+        if (userData.password !== userData.confirmPassword) {
+            showNotification('Passwords do not match', 'error');
+            return;
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(userData.email)) {
+            showNotification('Please enter a valid email address', 'error');
+            return;
+        }
+
+        // Sign up user
+        const user = auth.signUp(userData);
+        console.log('User signed up:', user);
+        
+        closeModal('signup');
+        showSuccessModal(
+            'Account Created!', 
+            `Welcome ${user.fullName}! Your account has been created. You can now view property details.`
+        );
+        
+        e.target.reset();
+        updateAuthUI();
+
+    } catch (error) {
+        console.error('Signup error:', error);
+        showNotification('Error creating account: ' + error.message, 'error');
+    }
+});
+
+// Sign in form submission
+document.getElementById('signinForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    try {
+        const formData = new FormData(e.target);
+        const email = formData.get('email');
+        const password = formData.get('password');
+
+        // Validate email and password
+        if (!email || !password) {
+            showNotification('Please enter email and password', 'error');
+            return;
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showNotification('Please enter a valid email address', 'error');
+            return;
+        }
+
+        // Sign in user
+        const user = auth.signIn(email, password);
+        console.log('User signed in:', user);
+        
+        closeModal('signin');
+        showSuccessModal(
+            'Signed In!', 
+            `Welcome back! You can now view all property details.`
+        );
+        
+        e.target.reset();
+        updateAuthUI();
+
+    } catch (error) {
+        console.error('Signin error:', error);
+        showNotification('Error signing in: ' + error.message, 'error');
+    }
+});
+
+// Sign up / Sign in modal switching
+const signinLink = document.getElementById('signinLink');
+const signupLink = document.getElementById('signupLink');
+
+if (signinLink) {
+    signinLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeModal('signup');
+        setTimeout(() => openModal('signin'), 300);
+    });
+}
+
+if (signupLink) {
+    signupLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeModal('signin');
+        setTimeout(() => openModal('signup'), 300);
+    });
+}
+
+// ========================================
+// INITIALIZE AUTHENTICATION ON PAGE LOAD
+// ========================================
+
+function initializeAuth() {
+    try {
+        // Initialize auth UI
+        updateAuthUI();
+        
+        // Check if user is logged in
+        if (auth.isAuthenticated()) {
+            const user = auth.getCurrentUser();
+            if (user) {
+                console.log('✓ User is logged in:', user.email || user.fullName);
+            }
+        } else {
+            console.log('✓ User is not authenticated');
+        }
+    } catch (error) {
+        console.error('Error initializing auth:', error);
+    }
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeAuth);
+} else {
+    initializeAuth();
+}
+
+// ========================================
+// PREVENT CHROME EXTENSION CONFLICTS
+// ======================================== 
+
+if (typeof chrome !== 'undefined' && chrome.runtime) {
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+        try {
+            sendResponse({ success: true });
+        } catch (error) {
+            // Silently handle
+        }
+        return true;
+    });
+}
+
+// Suppress unhandled promise rejections from extensions
+window.addEventListener('unhandledrejection', (event) => {
+    if (event.reason && typeof event.reason === 'string' && 
+        event.reason.includes('message channel closed')) {
+        event.preventDefault();
+    }
+});
