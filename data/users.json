@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "id": "user_demo",
+      "email": "investor@example.com",
+      "firstName": "John",
+      "lastName": "Doe",
+      "phone": "+2349120903603",
+      "createdAt": "2026-01-01T00:00:00Z",
+      "investmentProfile": {
+        "riskTolerance": "moderate",
+        "investmentCapacity": 500000,
+        "preferredLocations": [
+          "Lagos",
+          "Ibadan"
+        ],
+        "preferredAssetTypes": [
+          "residential",
+          "commercial"
+        ]
+      }
+    }
+  ]
+}

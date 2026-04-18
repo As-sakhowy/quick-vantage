@@ -1,0 +1,178 @@
+{
+  "investments": [
+    {
+      "id": "inv_001",
+      "title": "Multi-Family Rental Property - Ibadan",
+      "type": "residential_investment",
+      "location": {
+        "city": "Ibadan",
+        "state": "Oyo State",
+        "country": "Nigeria",
+        "address": "Jericho, Ibadan"
+      },
+      "investmentAmount": 150000,
+      "currency": "USD",
+      "minimumInvestment": 5000,
+      "description": "Ready-to-rent 5-unit apartment complex. Fully occupied with strong rental demand in growing area.",
+      "images": [
+        "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=500&h=400&fit=crop"
+      ],
+      "propertyDetails": {
+        "units": 5,
+        "totalSquareFeet": 8000,
+        "yearBuilt": 2022,
+        "occupancyRate": 0.95,
+        "currentTenants": 5
+      },
+      "financialMetrics": {
+        "roi": 0.08,
+        "capRate": 0.062,
+        "noi": 9300,
+        "monthlyRentalIncome": 2500,
+        "annualExpenses": 2800,
+        "estimatedAppreciation": 0.03
+      },
+      "fundingStructure": {
+        "totalRaise": 150000,
+        "amountRaised": 95000,
+        "amountRemaining": 55000,
+        "investorsCount": 8,
+        "fundingPercentage": 63.3
+      },
+      "exitStrategy": {
+        "type": "rental_income",
+        "expectedHoldingPeriod": 5,
+        "projectedExitValue": 210000
+      },
+      "riskProfile": "moderate",
+      "manager": {
+        "id": "mgr_001",
+        "name": "Vantage Property Management",
+        "experience": "15+ years",
+        "successRate": 0.98
+      },
+      "status": "active",
+      "ratings": {
+        "average": 4.7,
+        "count": 23
+      },
+      "createdAt": "2026-03-15"
+    },
+    {
+      "id": "inv_002",
+      "title": "Commercial Mall Complex - Lagos",
+      "type": "commercial_investment",
+      "location": {
+        "city": "Lagos",
+        "state": "Lagos State",
+        "country": "Nigeria",
+        "address": "Victoria Island, Lagos"
+      },
+      "investmentAmount": 500000,
+      "currency": "USD",
+      "minimumInvestment": 10000,
+      "description": "Premium commercial mall in high-traffic area. Pre-leasing 70% complete with major retailers.",
+      "images": [
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500&h=400&fit=crop"
+      ],
+      "propertyDetails": {
+        "units": 45,
+        "totalSquareFeet": 50000,
+        "yearBuilt": 2024,
+        "occupancyRate": 0.7,
+        "currentTenants": 32
+      },
+      "financialMetrics": {
+        "roi": 0.095,
+        "capRate": 0.075,
+        "noi": 37500,
+        "monthlyRentalIncome": 12500,
+        "annualExpenses": 37500,
+        "estimatedAppreciation": 0.04
+      },
+      "fundingStructure": {
+        "totalRaise": 500000,
+        "amountRaised": 350000,
+        "amountRemaining": 150000,
+        "investorsCount": 45,
+        "fundingPercentage": 70.0
+      },
+      "exitStrategy": {
+        "type": "sale_after_7_years",
+        "expectedHoldingPeriod": 7,
+        "projectedExitValue": 750000
+      },
+      "riskProfile": "moderate-high",
+      "manager": {
+        "id": "mgr_002",
+        "name": "Elite Real Estate Capital",
+        "experience": "20+ years",
+        "successRate": 0.95
+      },
+      "status": "active",
+      "ratings": {
+        "average": 4.5,
+        "count": 45
+      },
+      "createdAt": "2026-02-01"
+    },
+    {
+      "id": "inv_003",
+      "title": "Industrial Warehouse Park - Lagos",
+      "type": "industrial_investment",
+      "location": {
+        "city": "Lagos",
+        "state": "Lagos State",
+        "country": "Nigeria",
+        "address": "Ibeju-Lekki Industrial Zone"
+      },
+      "investmentAmount": 200000,
+      "currency": "USD",
+      "minimumInvestment": 5000,
+      "description": "Strategic warehouse location near port. Strong logistics demand with long-term tenant contracts.",
+      "images": [
+        "https://images.unsplash.com/photo-1553531088-f352e4f81f5f?w=500&h=400&fit=crop"
+      ],
+      "propertyDetails": {
+        "units": 8,
+        "totalSquareFeet": 120000,
+        "yearBuilt": 2021,
+        "occupancyRate": 1.0,
+        "currentTenants": 8
+      },
+      "financialMetrics": {
+        "roi": 0.085,
+        "capRate": 0.068,
+        "noi": 13600,
+        "monthlyRentalIncome": 4500,
+        "annualExpenses": 1200,
+        "estimatedAppreciation": 0.035
+      },
+      "fundingStructure": {
+        "totalRaise": 200000,
+        "amountRaised": 180000,
+        "amountRemaining": 20000,
+        "investorsCount": 28,
+        "fundingPercentage": 90.0
+      },
+      "exitStrategy": {
+        "type": "refinance",
+        "expectedHoldingPeriod": 3,
+        "projectedExitValue": 260000
+      },
+      "riskProfile": "low",
+      "manager": {
+        "id": "mgr_001",
+        "name": "Vantage Property Management",
+        "experience": "15+ years",
+        "successRate": 0.98
+      },
+      "status": "active",
+      "ratings": {
+        "average": 4.8,
+        "count": 28
+      },
+      "createdAt": "2026-01-10"
+    }
+  ]
+}
