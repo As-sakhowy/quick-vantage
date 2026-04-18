@@ -749,34 +749,17 @@ document.querySelectorAll('.property-card .cta-button.secondary').forEach(btn =>
     btn.addEventListener('click', (e) => {
         e.preventDefault();
 
-        // Check if user is authenticated
         if (!auth.isAuthenticated()) {
-            // Not logged in - show Sign In modal
-            console.log('User not authenticated. Redirecting to Sign In.');
+            showNotification('Please sign in to view property details', 'info');
             closeAllModals();
             openModal('signin');
-            
-            // Show a message to indicate they need to sign in
-            showNotification('Please sign in to view property details', 'info');
             return;
         }
 
-        // User is authenticated - show property details
+        // User is authenticated - redirect to listings with specific property
         const propertyTitle = btn.closest('.property-card').querySelector('h3').textContent;
-        const property = propertyData[propertyTitle] || propertyData['Modern Apartment Complex'];
-        
-        // Populate modal
-        document.getElementById('propertyTitle').textContent = propertyTitle;
-        document.getElementById('propertyLocation').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${property.location}`;
-        document.getElementById('propertyImage').src = property.image;
-        document.getElementById('propertyPrice').textContent = property.price;
-        document.getElementById('propertyROI').textContent = property.roi;
-        document.getElementById('propertyCapRate').textContent = property.capRate;
-        document.getElementById('propertyType').textContent = property.type;
-        document.getElementById('propertyStatus').textContent = property.status;
-        document.getElementById('propertyDescription').textContent = property.description;
-        
-        openModal('property');
+        localStorage.setItem('scrollToProperty', propertyTitle);
+        window.location.href = 'listings.html';
     });
 });
 
@@ -785,11 +768,11 @@ document.querySelectorAll('.property-card .cta-button.secondary').forEach(btn =>
 // ========================================
 
 // Sign up form submission
-document.getElementById('signupForm')?.addEventListener('submit', (e) => {
+document.getElementById('signupForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
     
     try {
-        const formData = new FormData(e.target);
+        const formData = new FormData(this);
         const userData = {
             fullName: formData.get('fullName'),
             email: formData.get('email'),
@@ -815,14 +798,24 @@ document.getElementById('signupForm')?.addEventListener('submit', (e) => {
         const user = auth.signUp(userData);
         console.log('User signed up:', user);
         
-        closeModal('signup');
-        showSuccessModal(
-            'Account Created!', 
-            `Welcome ${user.fullName}! Your account has been created. You can now view property details.`
-        );
+        // Close signup modal
+        const signupModal = document.getElementById('signupModal');
+        if (signupModal) {
+            signupModal.classList.remove('active');
+        }
         
-        e.target.reset();
-        updateAuthUI();
+        // Show success modal
+        document.getElementById('successTitle').textContent = 'Account Created!';
+        document.getElementById('successMessage').textContent = `Welcome ${user.fullName}! Redirecting to properties...`;
+        document.getElementById('successModal').classList.add('active');
+        
+        this.reset();
+
+        // Wait 2 seconds then redirect
+        setTimeout(() => {
+            console.log('Redirecting to listings.html');
+            window.location.href = 'listings.html';
+        }, 2000);
 
     } catch (error) {
         console.error('Signup error:', error);
@@ -831,11 +824,11 @@ document.getElementById('signupForm')?.addEventListener('submit', (e) => {
 });
 
 // Sign in form submission
-document.getElementById('signinForm')?.addEventListener('submit', (e) => {
+document.getElementById('signinForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
     
     try {
-        const formData = new FormData(e.target);
+        const formData = new FormData(this);
         const email = formData.get('email');
         const password = formData.get('password');
 
@@ -856,14 +849,24 @@ document.getElementById('signinForm')?.addEventListener('submit', (e) => {
         const user = auth.signIn(email, password);
         console.log('User signed in:', user);
         
-        closeModal('signin');
-        showSuccessModal(
-            'Signed In!', 
-            `Welcome back! You can now view all property details.`
-        );
+        // Close signin modal
+        const signinModal = document.getElementById('signinModal');
+        if (signinModal) {
+            signinModal.classList.remove('active');
+        }
         
-        e.target.reset();
-        updateAuthUI();
+        // Show success modal
+        document.getElementById('successTitle').textContent = 'Signed In!';
+        document.getElementById('successMessage').textContent = 'Welcome! Redirecting to your properties...';
+        document.getElementById('successModal').classList.add('active');
+        
+        this.reset();
+
+        // Wait 2 seconds then redirect
+        setTimeout(() => {
+            console.log('Redirecting to listings.html');
+            window.location.href = 'listings.html';
+        }, 2000);
 
     } catch (error) {
         console.error('Signin error:', error);
@@ -892,38 +895,64 @@ if (signupLink) {
 }
 
 // ========================================
-// INITIALIZE AUTHENTICATION ON PAGE LOAD
+// NOTIFICATION SYSTEM
 // ========================================
 
-function initializeAuth() {
-    try {
-        // Initialize auth UI
-        updateAuthUI();
-        
-        // Check if user is logged in
-        if (auth.isAuthenticated()) {
-            const user = auth.getCurrentUser();
-            if (user) {
-                console.log('✓ User is logged in:', user.email || user.fullName);
-            }
-        } else {
-            console.log('✓ User is not authenticated');
-        }
-    } catch (error) {
-        console.error('Error initializing auth:', error);
-    }
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : '#3b82f6'};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 2000;
+        animation: slideIn 0.3s ease;
+        max-width: 300px;
+    `;
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+    }, 4000);
 }
 
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeAuth);
-} else {
-    initializeAuth();
-}
+const notificationStyle = document.createElement('style');
+notificationStyle.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(notificationStyle);
 
 // ========================================
 // PREVENT CHROME EXTENSION CONFLICTS
-// ======================================== 
+// ========================================
 
 if (typeof chrome !== 'undefined' && chrome.runtime) {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -936,10 +965,204 @@ if (typeof chrome !== 'undefined' && chrome.runtime) {
     });
 }
 
-// Suppress unhandled promise rejections from extensions
-window.addEventListener('unhandledrejection', (event) => {
-    if (event.reason && typeof event.reason === 'string' && 
-        event.reason.includes('message channel closed')) {
-        event.preventDefault();
+// ========================================
+// AUTHENTICATION MANAGER
+// ========================================
+
+class AuthManager {
+    constructor() {
+        this.storageKey = 'quickVantageUser';
+        this.currentUser = this.loadUser();
+    }
+
+    isAuthenticated() {
+        try {
+            return this.currentUser !== null && this.currentUser !== undefined;
+        } catch (e) {
+            console.error('Error checking authentication:', e);
+            return false;
+        }
+    }
+
+    getCurrentUser() {
+        try {
+            return this.currentUser;
+        } catch (e) {
+            console.error('Error getting current user:', e);
+            return null;
+        }
+    }
+
+    signUp(userData) {
+        try {
+            if (!userData.fullName || !userData.email || !userData.phone || !userData.password) {
+                throw new Error('All fields are required');
+            }
+
+            const user = {
+                id: this.generateId(),
+                fullName: userData.fullName,
+                email: userData.email,
+                phone: userData.phone,
+                createdAt: new Date().toISOString(),
+                lastLogin: new Date().toISOString()
+            };
+
+            localStorage.setItem(this.storageKey, JSON.stringify(user));
+            this.currentUser = user;
+            return user;
+        } catch (error) {
+            console.error('Sign up error:', error);
+            throw error;
+        }
+    }
+
+    signIn(email, password) {
+        try {
+            if (!email || !password) {
+                throw new Error('Email and password are required');
+            }
+
+            const user = {
+                id: this.generateId(),
+                email: email,
+                lastLogin: new Date().toISOString()
+            };
+
+            localStorage.setItem(this.storageKey, JSON.stringify(user));
+            this.currentUser = user;
+            return user;
+        } catch (error) {
+            console.error('Sign in error:', error);
+            throw error;
+        }
+    }
+
+    signOut() {
+        try {
+            localStorage.removeItem(this.storageKey);
+            this.currentUser = null;
+        } catch (error) {
+            console.error('Sign out error:', error);
+        }
+    }
+
+    loadUser() {
+        try {
+            const userJson = localStorage.getItem(this.storageKey);
+            return userJson ? JSON.parse(userJson) : null;
+        } catch (error) {
+            console.error('Error loading user:', error);
+            return null;
+        }
+    }
+
+    generateId() {
+        return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+}
+
+const auth = new AuthManager();
+
+// ========================================
+// SIGN UP / SIGN IN FLOWS - FIXED
+// ========================================
+
+document.getElementById('signupForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    try {
+        const formData = new FormData(this);
+        const userData = {
+            fullName: formData.get('fullName'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            password: formData.get('password'),
+            confirmPassword: formData.get('confirmPassword')
+        };
+
+        if (userData.password !== userData.confirmPassword) {
+            showNotification('Passwords do not match', 'error');
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(userData.email)) {
+            showNotification('Please enter a valid email address', 'error');
+            return;
+        }
+
+        const user = auth.signUp(userData);
+        console.log('User signed up:', user);
+        
+        // Close signup modal
+        const signupModal = document.getElementById('signupModal');
+        if (signupModal) {
+            signupModal.classList.remove('active');
+        }
+        
+        // Show success modal
+        document.getElementById('successTitle').textContent = 'Account Created!';
+        document.getElementById('successMessage').textContent = `Welcome ${user.fullName}! Redirecting to properties...`;
+        document.getElementById('successModal').classList.add('active');
+        
+        this.reset();
+
+        // Wait 2 seconds then redirect
+        setTimeout(() => {
+            console.log('Redirecting to listings.html');
+            window.location.href = 'listings.html';
+        }, 2000);
+
+    } catch (error) {
+        console.error('Signup error:', error);
+        showNotification('Error creating account: ' + error.message, 'error');
+    }
+});
+
+document.getElementById('signinForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    try {
+        const formData = new FormData(this);
+        const email = formData.get('email');
+        const password = formData.get('password');
+
+        if (!email || !password) {
+            showNotification('Please enter email and password', 'error');
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showNotification('Please enter a valid email address', 'error');
+            return;
+        }
+
+        const user = auth.signIn(email, password);
+        console.log('User signed in:', user);
+        
+        // Close signin modal
+        const signinModal = document.getElementById('signinModal');
+        if (signinModal) {
+            signinModal.classList.remove('active');
+        }
+        
+        // Show success modal
+        document.getElementById('successTitle').textContent = 'Signed In!';
+        document.getElementById('successMessage').textContent = 'Welcome! Redirecting to your properties...';
+        document.getElementById('successModal').classList.add('active');
+        
+        this.reset();
+
+        // Wait 2 seconds then redirect
+        setTimeout(() => {
+            console.log('Redirecting to listings.html');
+            window.location.href = 'listings.html';
+        }, 2000);
+
+    } catch (error) {
+        console.error('Signin error:', error);
+        showNotification('Error signing in: ' + error.message, 'error');
     }
 });

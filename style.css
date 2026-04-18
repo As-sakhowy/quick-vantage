@@ -41,6 +41,8 @@ body {
     line-height: 1.6;
     color: var(--text-dark);
     background-color: var(--white);
+    overflow-x: hidden;
+    width: 100%;
 }
 
 /* ========================================
@@ -1140,7 +1142,7 @@ body {
    ======================================== */
 
 .modal {
-    display: none;
+    display: none !important;
     position: fixed;
     top: 0;
     left: 0;
@@ -1157,7 +1159,7 @@ body {
 }
 
 .modal.active {
-    display: flex;
+    display: flex !important;
     opacity: 1;
 }
 
@@ -1713,84 +1715,51 @@ body {
 }
 
 /* ========================================
-   VALUE PROPOSITION SECTION - RESPONSIVE
+   UI POLISH & CENTERING FIXES
    ======================================== */
 
-.value-prop {
-    padding: clamp(3rem, 8vw, 5rem) 1.5rem;
-    background: linear-gradient(180deg, rgba(26, 181, 163, 0.03) 0%, rgba(251, 191, 36, 0.03) 100%);
-}
-
-.value-prop-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: center;
-}
-
-.value-prop-text h2 {
-    font-size: clamp(1.8rem, 5vw, 2.2rem);
-    margin-bottom: 1.5rem;
-    color: var(--text-dark);
-    font-weight: 700;
-}
-
-.value-prop-list {
-    list-style: none;
-    margin-bottom: 2rem;
-}
-
-.value-prop-list li {
-    padding: 0.75rem 0;
-    padding-left: 2rem;
-    position: relative;
-    color: var(--text-light);
-    line-height: 1.7;
-    font-size: 0.95rem;
-}
-
-.value-prop-list li:before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: var(--accent-color);
-    font-weight: bold;
-    font-size: 1.2rem;
-}
-
-.value-prop-image {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
-    border-radius: 1rem;
-    min-height: 400px;
-    overflow: hidden;
-}
-
-.placeholder {
-    color: var(--white);
-    font-size: 3rem;
-    text-align: center;
-    opacity: 0.9;
+/* Ensure body is properly centered */
+html, body {
+    width: 100%;
+    overflow-x: hidden;
 }
 
 /* ========================================
-   PROPERTY LISTINGS - RESPONSIVE IMAGES
+   PROPERTY CARD - CENTERING & HIERARCHY
    ======================================== */
 
-.properties {
-    padding: clamp(3rem, 8vw, 5rem) 1.5rem;
-    background: var(--white);
+.listings-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    width: 100%;
 }
 
-.properties-grid {
+.listings-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem;
+    margin: 0 auto;
+    width: 100%;
+    justify-items: center;
 }
 
-.property-card {
+@media (max-width: 768px) {
+    .listings-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+        justify-items: stretch;
+    }
+}
+
+@media (max-width: 480px) {
+    .listings-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+.property-card-listing {
     background: var(--white);
     border: 2px solid var(--border-color);
     border-radius: 1rem;
@@ -1799,186 +1768,554 @@ body {
     transition: var(--transition);
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 340px;
+    height: 100%;
 }
 
-.property-card:hover {
-    transform: translateY(-10px);
+.property-card-listing:hover {
+    transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
     border-color: var(--primary-color);
 }
 
-.property-image {
+/* ========================================
+   PROPERTY IMAGE - UNIFIED WITH CONTENT
+   ======================================== */
+
+.property-image-listing {
     position: relative;
     overflow: hidden;
-    height: 220px;
+    height: 200px;
     width: 100%;
 }
 
-.property-image img {
+.property-image-listing img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: var(--transition);
-    display: block;
 }
 
-.property-image img:hover {
-    transform: scale(1.08);
-}
-
-.property-card:hover .property-image img {
+.property-card-listing:hover .property-image-listing img {
     transform: scale(1.1);
 }
 
-.property-badge {
+.property-type-badge {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background: var(--primary-color);
-    color: var(--white);
     padding: 0.5rem 1rem;
     border-radius: 2rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    z-index: 2;
-}
-
-.property-badge.hot {
-    background: var(--error-color);
-}
-
-.property-badge.featured {
-    background: var(--accent-color);
-    color: var(--text-dark);
-}
-
-.property-content {
-    padding: 1.5rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.property-content h3 {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-    color: var(--text-dark);
-    font-weight: 600;
-}
-
-.property-location {
-    color: var(--text-light);
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-}
-
-.property-location i {
-    color: var(--primary-color);
-    margin-right: 0.5rem;
-}
-
-.property-details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border-color);
-    flex-grow: 1;
-}
-
-.detail {
-    display: flex;
-    flex-direction: column;
-}
-
-.detail .label {
     font-size: 0.8rem;
-    color: var(--text-light);
-    font-weight: 600;
-    margin-bottom: 0.25rem;
+    font-weight: 700;
+    z-index: 2;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-.detail .value {
-    font-size: 1rem;
+.property-type-badge.sales {
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+.property-type-badge.investment {
+    background: var(--accent-color);
+    color: var(--text-dark);
+}
+
+/* ========================================
+   PROPERTY CONTENT - VISUAL HIERARCHY
+   ======================================== */
+
+.property-content-listing {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* TITLE - STRONG & COMMANDING */
+.property-content-listing h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0;
+    line-height: 1.3;
+    letter-spacing: -0.5px;
+}
+
+/* LOCATION - SUBTLE & SECONDARY */
+.property-location-listing {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.property-location-listing i {
+    color: var(--primary-color);
+    font-size: 0.85rem;
+}
+
+/* ========================================
+   PROPERTY STATS - GROUPED & TIGHT
+   ======================================== */
+
+.property-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--primary-color);
 }
 
-.property-card .cta-button {
-    width: 100%;
-    text-align: center;
+/* ========================================
+   BUTTONS - STRONG & DEMANDING
+   ======================================== */
+
+.property-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
     margin-top: auto;
+    padding-top: 0.5rem;
+}
+
+.property-actions button {
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* PRIMARY BUTTON - FILLED & COMMANDING */
+.btn-view {
+    background: var(--primary-color);
+    color: var(--white);
+    box-shadow: 0 2px 8px rgba(26, 181, 163, 0.3);
+}
+
+.btn-view:hover {
+    background: var(--primary-dark);
+    box-shadow: 0 4px 12px rgba(26, 181, 163, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-view:active {
+    transform: translateY(0);
+}
+
+/* SECONDARY BUTTON - OUTLINE */
+.btn-save {
+    background: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-save:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    box-shadow: 0 4px 12px rgba(26, 181, 163, 0.3);
+}
+
+.btn-save:active {
+    transform: scale(0.98);
 }
 
 /* ========================================
-   AUTHENTICATION STYLES
+   TAB NAVIGATION - CENTERED & BALANCED
    ======================================== */
 
-.auth-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
+.tab-navigation {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem auto;
+    flex-wrap: wrap;
+    max-width: 100%;
+    padding: 0 1.5rem;
 }
 
-.auth-status {
+.tab-btn {
+    padding: 0.9rem 2.2rem;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    border-radius: 0.6rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 1rem;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    letter-spacing: -0.3px;
+}
+
+.tab-btn.active {
+    background: var(--primary-color);
+    color: var(--white);
+    box-shadow: 0 4px 12px rgba(26, 181, 163, 0.3);
+}
+
+.tab-btn:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 181, 163, 0.3);
+}
+
+.tab-btn i {
+    font-size: 1.1rem;
+}
+
+/* ========================================
+   NAVBAR - STRONG PRESENCE
+   ======================================== */
+
+.navbar-top {
+    background: var(--white);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid var(--accent-color);
+    padding: 0;
+}
+
+.navbar-top-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo-section {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1rem;
-    background: rgba(26, 181, 163, 0.1);
-    border-radius: 0.5rem;
-    margin-bottom: 1.5rem;
+    flex-shrink: 0;
 }
 
-.auth-status.authenticated {
-    background: rgba(16, 185, 129, 0.1);
+.logo-img-small {
+    height: 45px;
+    width: auto;
+    object-fit: contain;
+    transition: var(--transition);
 }
 
-.auth-status.unauthenticated {
-    background: rgba(239, 68, 68, 0.1);
+.logo-img-small:hover {
+    transform: scale(1.05);
 }
 
-.auth-status-indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #10b981;
-    animation: pulse 2s infinite;
-}
-
-.auth-status.unauthenticated .auth-status-indicator {
-    background: #ef4444;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
-}
-
-.property-locked {
-    position: relative;
-    opacity: 0.6;
-    pointer-events: none;
-}
-
-.property-locked::after {
-    content: '🔒 Sign in to view';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    text-align: center;
+.logo-text-small {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text-dark);
     white-space: nowrap;
-    z-index: 10;
+    letter-spacing: -0.5px;
+}
+
+.navbar-actions {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(26, 181, 163, 0.3);
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.user-name {
+    font-weight: 700;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+}
+
+.user-email {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+#logoutBtnTop {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.95rem !important;
+    font-weight: 700;
+    border-width: 2px;
+}
+
+#logoutBtnTop:hover {
+    box-shadow: 0 4px 12px rgba(26, 181, 163, 0.3);
+}
+
+/* ========================================
+   HEADER - COMMANDING PRESENCE
+   ======================================== */
+
+.listings-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    padding: 3rem 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.listings-header h1 {
+    font-size: 2.8rem;
+    margin-bottom: 0.75rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.2;
+}
+
+.user-welcome {
+    font-size: 1.15rem;
+    opacity: 0.95;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+@media (max-width: 768px) {
+    .navbar-top-content {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .navbar-actions {
+        gap: 0.75rem;
+    }
+
+    .user-details {
+        display: none;
+    }
+
+    .logo-text-small {
+        font-size: 1.2rem;
+    }
+
+    .listings-header h1 {
+        font-size: 2rem;
+    }
+
+    .user-welcome {
+        font-size: 1rem;
+    }
+
+    .tab-navigation {
+        gap: 0.5rem;
+        padding: 0 1rem;
+    }
+
+    .tab-btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .property-content-listing h3 {
+        font-size: 1.15rem;
+    }
+
+    .stat-value {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-top-content {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.75rem;
+    }
+
+    .logo-section {
+        width: 100%;
+        gap: 0.75rem;
+    }
+
+    .navbar-actions {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    .navbar-actions button {
+        padding: 0.65rem 1rem !important;
+        font-size: 0.85rem !important;
+    }
+
+    .listings-header {
+        padding: 2rem 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .listings-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .user-welcome {
+        font-size: 0.9rem;
+    }
+
+    .tab-navigation {
+        gap: 0.4rem;
+        padding: 0 0.75rem;
+        margin: 1.5rem auto;
+    }
+
+    .tab-btn {
+        padding: 0.65rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .tab-btn i {
+        display: none;
+    }
+
+    .property-card-listing {
+        max-width: 100%;
+    }
+
+    .listings-grid {
+        gap: 0.75rem;
+    }
+
+    .property-content-listing {
+        padding: 1rem;
+        gap: 0.5rem;
+    }
+
+    .property-content-listing h3 {
+        font-size: 1rem;
+    }
+
+    .property-location-listing {
+        font-size: 0.85rem;
+    }
+
+    .property-stats {
+        gap: 0.75rem;
+        margin: 0.75rem 0;
+        padding: 0.75rem 0;
+    }
+
+    .stat-label {
+        font-size: 0.7rem;
+    }
+
+    .stat-value {
+        font-size: 0.95rem;
+    }
+
+    .property-actions {
+        gap: 0.5rem;
+    }
+
+    .property-actions button {
+        padding: 0.75rem 0.8rem !important;
+        font-size: 0.85rem !important;
+    }
+
+    .filter-section {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .filter-group {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        width: 100%;
+    }
+}
+
+@media (max-width: 360px) {
+    .listings-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .property-content-listing h3 {
+        font-size: 0.95rem;
+    }
+
+    .property-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-label {
+        font-size: 0.65rem;
+    }
+
+    .tab-btn {
+        padding: 0.6rem 0.9rem;
+        font-size: 0.75rem;
+    }
 }

@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Vantage - Property Listings</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Additional styles for listings page */
+        .listings-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .listings-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .user-welcome {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin-bottom: 1rem;
+        }
+
+        .tab-navigation {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 0.85rem 2rem;
+            border: 2px solid var(--primary-color);
+            background: transparent;
+            color: var(--primary-color);
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .tab-btn:hover {
+            background: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .listings-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem 3rem;
+        }
+
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .listings-empty {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-light);
+        }
+
+        .listings-empty i {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .filter-section {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 0.6rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        .navbar-top {
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 3px solid var(--accent-color);
+            padding: 0;
+        }
+
+        .navbar-top-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-text-small {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            white-space: nowrap;
+        }
+
+        .navbar-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .user-email {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .property-card-listing {
+            background: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .property-card-listing:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .property-image-listing {
+            position: relative;
+            overflow: hidden;
+            height: 200px;
+            width: 100%;
+        }
+
+        .property-image-listing img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .property-card-listing:hover .property-image-listing img {
+            transform: scale(1.1);
+        }
+
+        .property-type-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent-color);
+            color: var(--text-dark);
+            padding: 0.4rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .property-type-badge.sales {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .property-type-badge.investment {
+            background: var(--accent-color);
+            color: var(--text-dark);
+        }
+
+        .property-content-listing {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .property-content-listing h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .property-location-listing {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .property-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .property-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: auto;
+        }
+
+        .property-actions button {
+            padding: 0.75rem;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 0.4rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .btn-view {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-view:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-save {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-save:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .listings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                flex-direction: column;
+            }
+
+            .filter-group input,
+            .filter-group select {
+                width: 100%;
+            }
+
+            .tab-navigation {
+                gap: 0.5rem;
+            }
+
+            .tab-btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .navbar-top-content {
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .navbar-actions {
+                gap: 1rem;
+            }
+
+            .user-details {
+                display: none;
+            }
+
+            .logo-text-small {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-top-content {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .logo-section {
+                width: 100%;
+            }
+
+            .navbar-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .navbar-actions button {
+                padding: 0.5rem 1rem !important;
+                font-size: 0.85rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar-top">
+        <div class="navbar-top-content">
+            <div class="logo-section">
+                <img src="logo.png" alt="Quick Vantage Logo" class="logo-img-small" style="height: 40px;">
+                <span class="logo-text-small">Quick Vantage</span>
+            </div>
+
+            <div class="navbar-actions">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">Q</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">User</div>
+                        <div class="user-email" id="userEmail">user@example.com</div>
+                    </div>
+                </div>
+                <button class="cta-button secondary" id="logoutBtnTop">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="listings-header">
+        <h1>Discover Investment Opportunities</h1>
+        <p class="user-welcome">Browse our curated selection of premium properties</p>
+    </div>
+
+    <!-- Listings Container -->
+    <div class="listings-container">
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="sales">
+                <i class="fas fa-home"></i> Sales
+            </button>
+            <button class="tab-btn" data-tab="investment">
+                <i class="fas fa-chart-line"></i> Investment
+            </button>
+        </div>
+
+        <!-- Sales Tab -->
+        <div id="sales" class="tab-content active">
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label><i class="fas fa-dollar-sign"></i> Price Range</label>
+                    <input type="range" id="priceFilter" min="200000" max="1500000" step="50000" value="1500000">
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-map-marker-alt"></i> Location</label>
+                    <select id="locationFilter">
+                        <option value="">All Locations</option>
+                        <option value="New York">New York</option>
+                        <option value="Los Angeles">Los Angeles</option>
+                        <option value="Austin">Austin</option>
+                        <option value="Miami">Miami</option>
+                        <option value="Chicago">Chicago</option>
+                        <option value="Denver">Denver</option>
+                    </select>
+                </div>
+                <button class="cta-button primary" id="clearFilters" style="margin-left: auto;">Clear Filters</button>
+            </div>
+
+            <div class="listings-grid" id="salesGrid">
+                <!-- Properties will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Investment Tab -->
+        <div id="investment" class="tab-content">
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label><i class="fas fa-percent"></i> Min ROI</label>
+                    <input type="number" id="roiFilter" min="5" max="15" value="5" step="0.5">
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-building"></i> Property Type</label>
+                    <select id="typeFilter">
+                        <option value="">All Types</option>
+                        <option value="Multi-Family">Multi-Family</option>
+                        <option value="Commercial">Commercial</option>
+                        <option value="Industrial">Industrial</option>
+                        <option value="Hospitality">Hospitality</option>
+                    </select>
+                </div>
+                <button class="cta-button primary" id="clearFiltersInvestment" style="margin-left: auto;">Clear Filters</button>
+            </div>
+
+            <div class="listings-grid" id="investmentGrid">
+                <!-- Properties will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Property Details Modal (same as before) -->
+    <div id="propertyModal" class="modal">
+        <div class="modal-content modal-property">
+            <button class="modal-close">&times;</button>
+            
+            <div class="property-modal-grid">
+                <div class="property-modal-left">
+                    <img id="propertyImage" src="" alt="Property" class="property-modal-image">
+                </div>
+                
+                <div class="property-modal-right">
+                    <h2 id="propertyTitle"></h2>
+                    <p id="propertyLocation" class="property-location"></p>
+                    
+                    <div class="property-badges">
+                        <span id="propertyType" class="badge"></span>
+                        <span id="propertyStatus" class="badge status"></span>
+                    </div>
+
+                    <div class="property-quick-info">
+                        <div class="info-item">
+                            <span class="label">Price</span>
+                            <span id="propertyPrice" class="value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">ROI</span>
+                            <span id="propertyROI" class="value"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Cap Rate</span>
+                            <span id="propertyCapRate" class="value"></span>
+                        </div>
+                    </div>
+
+                    <p id="propertyDescription" class="property-description"></p>
+
+                    <div class="property-features-list">
+                        <h4>Key Features</h4>
+                        <ul id="propertyFeatures">
+                            <li>Modern architecture and design</li>
+                            <li>Strong tenant base</li>
+                            <li>Low vacancy rates</li>
+                            <li>High market demand</li>
+                        </ul>
+                    </div>
+
+                    <div class="property-modal-actions">
+                        <button class="cta-button primary">Request Info</button>
+                        <button class="cta-button secondary">Schedule Tour</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="success-icon">✓</div>
+            <h2 id="successTitle">Success!</h2>
+            <p id="successMessage"></p>
+            <button class="cta-button primary" id="successCloseBtn">Continue</button>
+        </div>
+    </div>
+
+    <!-- Load auth manager first -->
+<script>
+// ========================================
+// AUTHENTICATION MANAGER (for listings page)
+// ========================================
+
+class AuthManager {
+    constructor() {
+        this.storageKey = 'quickVantageUser';
+        this.currentUser = this.loadUser();
+    }
+
+    isAuthenticated() {
+        try {
+            return this.currentUser !== null && this.currentUser !== undefined;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    getCurrentUser() {
+        try {
+            return this.currentUser;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    signOut() {
+        try {
+            localStorage.removeItem(this.storageKey);
+            this.currentUser = null;
+        } catch (error) {
+            console.error('Sign out error:', error);
+        }
+    }
+
+    loadUser() {
+        try {
+            const userJson = localStorage.getItem(this.storageKey);
+            return userJson ? JSON.parse(userJson) : null;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    generateId() {
+        return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+}
+
+const auth = new AuthManager();
+
+// Check authentication before loading page
+window.addEventListener('load', function() {
+    if (!auth.isAuthenticated()) {
+        console.log('User not authenticated, redirecting to index.html');
+        window.location.href = 'index.html';
+    }
+});
+</script>
+
+<!-- Then your listings.js -->
+<script src="listings.js"></script>
+</body>
+</html>
