@@ -426,14 +426,57 @@ body {
    HERO SECTION
    ======================================== */
 
-.hero {
+/* .hero {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 50%, var(--secondary-color) 100%);
     color: var(--white);
     padding: clamp(3rem, 10vw, 6rem) 1.5rem;
     text-align: center;
     position: relative;
     overflow: hidden;
+} */
+
+
+
+.hero{
+  position: relative;
+  height: 500px;     /* change to your desired height */
+  overflow: hidden;
+   color: var(--white);
+    padding: clamp(3rem, 10vw, 6rem) 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
 }
+
+/* the video fills the section */
+.bg-video{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* important */
+  z-index: -1;
+}
+
+/* optional dark overlay for readability */
+.video-hero::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 0;
+}
+
+.content{
+  position: relative;
+  z-index: 1;
+  color: white;
+  padding: 60px 20px;
+}
+
+
+
+
 
 .hero::before {
     content: '';
@@ -697,6 +740,13 @@ body {
     font-size: clamp(1.8rem, 5vw, 2.2rem);
     margin-bottom: 1.5rem;
     color: var(--text-dark);
+    font-weight: 700;
+}
+
+.value1{
+    font-size: clamp(1.8rem, 5vw, 2.2rem);
+    margin-bottom: 1.5rem;
+    color: #ffffff;
     font-weight: 700;
 }
 

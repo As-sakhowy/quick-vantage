@@ -83,7 +83,7 @@ QUICK VANTAGE/
 
 Sales Tab:
 - Filter by city, type, max price
-- View property details
+- View property details 
 - Contact seller button
 - Save to favorites
 
