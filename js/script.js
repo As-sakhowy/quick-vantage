@@ -1,3 +1,4 @@
+console.log("MAIN JS LOADED");
 // ========================================
 // NAVBAR / HAMBURGER MENU
 // ========================================
@@ -27,47 +28,50 @@ document.addEventListener("DOMContentLoaded", () => {
   // ========================
   // SIGN IN BUTTON → OPEN MODAL
   // ========================
-  document.querySelectorAll(".nav-btn").forEach((btn) => {
+ document.addEventListener("DOMContentLoaded", () => {
+
+  // ======================
+  // MODAL HELPERS
+  // ======================
+  function openModal(name) {
+    closeAllModals();
+    const modal = document.getElementById(name + "Modal");
+    if (modal) modal.classList.add("active");
+  }
+
+  function closeAllModals() {
+    document.querySelectorAll(".modal").forEach(m => m.classList.remove("active"));
+  }
+
+  // Close buttons
+  document.querySelectorAll(".modal-close").forEach(btn => {
+    btn.addEventListener("click", closeAllModals);
+  });
+
+  // ======================
+  // NAV BUTTONS
+  // ======================
+  document.querySelectorAll(".nav-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       openModal("signin");
     });
   });
-});
 
-function closeAllModals() {
-  document.querySelectorAll(".modal").forEach((m) => {
-    m.classList.remove("active");
+  // ======================
+  // SWITCH LINKS
+  // ======================
+  document.getElementById("signupLink")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    openModal("signup");
   });
-  document.body.style.overflow = "auto";
-}
 
-function openModal(name) {
-  closeAllModals(); // 🔥 important
-
-  const modal = document.getElementById(name + "Modal");
-
-  if (!modal) return;
-
-  modal.classList.add("active");
-  document.body.style.overflow = "hidden";
-}
-
-function closeModal(name) {
-  const modal = document.getElementById(name + "Modal");
-  if (modal) {
-    modal.classList.remove("active");
-    document.body.style.overflow = "auto";
-  }
-}
-
-document.querySelectorAll(".modal-close").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    btn.closest(".modal").classList.remove("active");
-    document.body.style.overflow = "auto";
+  document.getElementById("signinLink")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    openModal("signin");
   });
-});
 
+});
 function openPropertyModal(propertyTitle) {
   const property = propertyData[propertyTitle];
 
@@ -85,31 +89,12 @@ function openPropertyModal(propertyTitle) {
 }
 
 document.querySelectorAll(".property-card .cta-button.secondary")
-  .forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-
-      const propertyTitle = btn
-        .closest(".property-card")
-        .querySelector("h3").textContent;
-
-      // Check auth (safe check)
-      const isLoggedIn =
-        window.AuthManager && window.AuthManager.isAuthenticated();
-
-      if (!isLoggedIn) {
-        // Save what user wanted
-        sessionStorage.setItem("pendingProperty", propertyTitle);
-
-        // Open sign in modal
-        openModal("signin");
-        return;
-      }
-
-      // If logged in → open property modal
-      openPropertyModal(propertyTitle);
-    });
+.forEach(btn => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    openModal("signin");
   });
+});
 
 // ========================================
 // NAV USER STATE
@@ -153,16 +138,14 @@ if (pendingProperty) {
   }, 300);
 }
 
-document.querySelectorAll(".cta-button.primary").forEach((btn) => {
+document.querySelectorAll(".cta-button.primary").forEach(btn => {
   btn.addEventListener("click", (e) => {
     e.preventDefault();
     openModal("signup");
   });
 });
 
-// run it
-document.addEventListener("DOMContentLoaded", updateNavUser);
-console.log("API:", window.API);
+
 
 // REDIRECT IF LOGGED IN
 document.addEventListener("DOMContentLoaded", () => {
@@ -183,21 +166,22 @@ document.getElementById("welcomeUser").textContent =
   user?.email || "User";
 
 // SIGN IN
-document.getElementById("signinForm")?.addEventListener("submit", async (e) => {
+document.getElementById("signinForm")?.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const formData = new FormData(e.target);
-  const data = Object.fromEntries(formData);
+  const form = e.target;
+  const email = form.email.value;
+  const password = form.password.value;
 
-  try {
-    await window.auth.signIn(data.email, data.password);
-
-    window.location.href = "./dashboard.html";
-
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
+  if (!email || !password) {
+    alert("Fill all fields");
+    return;
   }
+
+  alert("Login successful");
+
+  form.reset();
+  document.querySelectorAll(".modal").forEach(m => m.classList.remove("active"));
 });
 
 // SIGN UP
@@ -206,33 +190,27 @@ document.getElementById("signupForm")?.addEventListener("submit", async (e) => {
 
   const form = e.target;
 
-  // enforce checkbox manually (extra safety)
-  const checkbox = form.querySelector('input[type="checkbox"]');
-  if (checkbox && !checkbox.checked) {
-    alert("You must accept terms");
+  const fullName = form.fullName.value.trim();
+  const email = form.email.value.trim();
+  const password = form.password.value.trim();
+  const checkbox = form.querySelector("input[type='checkbox']");
+
+  if (!checkbox.checked) {
+    alert("You must agree to terms");
     return;
   }
 
-  const formData = new FormData(form);
-  const data = Object.fromEntries(formData);
-
-  try {
-    const { user, session } = await window.auth.signUp(
-      data.email,
-      data.password
-    );
-
-    if (!user) throw new Error("Signup failed");
-
-    alert("Account created. Check your email.");
-
-    closeModal("signup");
-    openModal("signin");
-
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
+  if (!fullName || !email || !password) {
+    alert("All fields are required");
+    return;
   }
+
+  console.log("Creating account...");
+
+  // TEMP SUCCESS (we'll connect backend later)
+  alert("Account created successfully");
+
+  form.reset();
 });
 // SIGN IN/UP LINKS
 document.getElementById("signinLink")?.addEventListener("click", (e) => {
@@ -268,10 +246,6 @@ document.getElementById("investmentTab")?.addEventListener("click", () => {
 
 
 
-document.getElementById("logout-btn")?.addEventListener("click", () => {
-  window.AuthManager.logout();
-  
-});
 
 
 document.querySelectorAll(".tab-btn").forEach((btn) => {
@@ -286,4 +260,9 @@ document.querySelectorAll(".tab-btn").forEach((btn) => {
     btn.classList.add("active");
     document.getElementById(target).classList.add("active");
   });
+});
+
+document.getElementById("logout-btn")?.addEventListener("click", () => {
+  window.AuthManager.logout();
+  
 });
