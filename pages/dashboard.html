@@ -1,317 +1,650 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - Quick Vantage</title>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link rel="stylesheet" href="../style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
     <style>
-        .dashboard-container { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem; min-height: 100vh; background: #f8fafc; }
-        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); }
-        .dashboard-header h1 { font-size: 2rem; color: var(--text-dark); }
-        .user-menu { display: flex; align-items: center; gap: 1rem; }
-        .user-info { text-align: right; }
-        .user-info .name { font-weight: 600; color: var(--text-dark); }
-        .user-info .email { font-size: 0.9rem; color: var(--text-light); }
-        .logout-btn { padding: 0.5rem 1rem; background: var(--error-color); color: white; border: none; border-radius: 0.5rem; cursor: pointer; transition: var(--transition);margin-left:auto; }
-        .logout-btn:hover { background: #d83333; }
-        .portfolio-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-        .summary-card { background: white; padding: 1.5rem; border-radius: 1rem; box-shadow: var(--shadow-md); border-left: 4px solid var(--primary-color); }
-        .summary-card.returns { border-left-color: var(--success-color); }
-        .summary-card.investments { border-left-color: var(--accent-color); }
-        .summary-card label { display: block; font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
-        .summary-card .value { font-size: 1.8rem; font-weight: 700; color: var(--text-dark); }
-        .summary-card .subtext { font-size: 0.85rem; color: var(--text-light); margin-top: 0.5rem; }
-        .dashboard-tabs { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--border-color); background: white; border-radius: 1rem 1rem 0 0; }
-        .tab-btn { padding: 1rem 2rem; background: none; border: none; cursor: pointer; font-size: 1rem; font-weight: 600; color: var(--text-light); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: var(--transition); }
-        .tab-btn.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
-        .tab-btn:hover { color: var(--primary-color); }
-        .tab-content { display: none; background: white; padding: 2rem; border-radius: 0 0 1rem 1rem; box-shadow: var(--shadow-md); }
-        .tab-content.active { display: block; }
-        .listings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; margin-top: 1.5rem; }
-        .listing-card { background: #f8fafc; border-radius: 1rem; overflow: hidden; border: 2px solid var(--border-color); transition: var(--transition); cursor: pointer; }
-        .listing-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--primary-color); }
-        .listing-image { width: 100%; height: 200px; object-fit: cover; background: linear-gradient(135deg, var(--primary-color), var(--primary-light)); }
-        .listing-body { padding: 1.5rem; }
-        .listing-title { font-size: 1.1rem; font-weight: 600; color: var(--text-dark); margin-bottom: 0.5rem; }
-        .listing-location { display: flex; align-items: center; gap: 0.5rem; color: var(--text-light); font-size: 0.9rem; margin-bottom: 1rem; }
-        .listing-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
-        .meta-item label { font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; }
-        .meta-item .value { font-size: 1.1rem; font-weight: 600; color: var(--text-dark); }
-        .listing-price { font-size: 1.4rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem; }
-        .listing-actions { display: flex; gap: 0.75rem; }
-        .listing-actions button { flex: 1; padding: 0.75rem; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600; transition: var(--transition); }
-        .btn-view { background: var(--primary-color); color: white; }
-        .btn-view:hover { background: var(--primary-dark); }
-        .btn-wishlist { background: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); }
-        .btn-wishlist:hover { background: var(--primary-color); color: white; }
-        .filter-section { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-        .filter-group { flex: 1; min-width: 200px; }
-        .filter-group label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-dark); }
-        .filter-group input, .filter-group select { width: 100%; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: 0.5rem; font-size: 0.95rem; transition: var(--transition); }
-        .filter-group input:focus, .filter-group select:focus { border-color: var(--primary-color); outline: none; }
-        .btn-filter { align-self: flex-end; padding: 0.75rem 1.5rem; background: var(--primary-color); color: white; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600; }
-        .loading { text-align: center; padding: 2rem; color: var(--text-light); }
-        .loading-spinner { width: 40px; height: 40px; border: 4px solid var(--border-color); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .empty-state { text-align: center; padding: 3rem 2rem; color: var(--text-light); }
-        .empty-state i { font-size: 3rem; color: var(--border-color); margin-bottom: 1rem; display: block; }
-        .detail-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.7); display: none; align-items: center; justify-content: center; z-index: 1000; }
-        .detail-modal.active { display: flex; }
-        .detail-modal-content { background: white; border-radius: 1rem; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; padding: 2rem; }
-        .detail-modal-close { float: right; font-size: 1.5rem; cursor: pointer; color: var(--text-light); background: none; border: none; }
-        @media (max-width: 768px) { .dashboard-header { flex-direction: column; text-align: center; gap: 1rem; } .user-info { text-align: center; } .filter-section { flex-direction: column; } .filter-group { min-width: 100%; } .listings-grid { grid-template-columns: 1fr; } .tab-btn { padding: 0.75rem 1rem; font-size: 0.9rem; } }
-    
-        /* Mobile menu styles */
+        /* Add to style.css */
+.detail-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 2000;
+    /* ... existing styles ... */
+}
+
+.detail-modal.active {
+    display: flex; /* Shown when triggered */
+}
+      .dashboard-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem;
+        min-height: 100vh;
+        background: #f8fafc;
+      }
+      .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        background: white;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+      .dashboard-header h1 {
+        font-size: 2rem;
+        color: var(--text-dark);
+      }
+      .user-menu {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .user-info {
+        text-align: right;
+      }
+      .user-info .name {
+        font-weight: 600;
+        color: var(--text-dark);
+      }
+      .user-info .email {
+        font-size: 0.9rem;
+        color: var(--text-light);
+      }
+      .logout-btn {
+        padding: 0.5rem 1rem;
+        background: var(--error-color);
+        color: white;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-left: auto;
+      }
+      .logout-btn:hover {
+        background: #d83333;
+      }
+      .portfolio-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+      .summary-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: var(--shadow-md);
+        border-left: 4px solid var(--primary-color);
+      }
+      .summary-card.returns {
+        border-left-color: var(--success-color);
+      }
+      .summary-card.investments {
+        border-left-color: var(--accent-color);
+      }
+      .summary-card label {
+        display: block;
+        font-size: 0.9rem;
+        color: var(--text-light);
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .summary-card .value {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--text-dark);
+      }
+      .summary-card .subtext {
+        font-size: 0.85rem;
+        color: var(--text-light);
+        margin-top: 0.5rem;
+      }
+      .dashboard-tabs {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        border-bottom: 2px solid var(--border-color);
+        background: white;
+        border-radius: 1rem 1rem 0 0;
+      }
+      .tab-btn {
+        padding: 1rem 2rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-light);
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px;
+        transition: var(--transition);
+      }
+      .tab-btn.active {
+        color: var(--primary-color);
+        border-bottom-color: var(--primary-color);
+      }
+      .tab-btn:hover {
+        color: var(--primary-color);
+      }
+      .tab-content {
+        display: none;
+        background: white;
+        padding: 2rem;
+        border-radius: 0 0 1rem 1rem;
+        box-shadow: var(--shadow-md);
+      }
+      .tab-content.active {
+        display: block;
+      }
+      .listings-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-top: 1.5rem;
+      }
+      .listing-card {
+        background: #f8fafc;
+        border-radius: 1rem;
+        overflow: hidden;
+        border: 2px solid var(--border-color);
+        transition: var(--transition);
+        cursor: pointer;
+      }
+      .listing-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--primary-color);
+      }
+      .listing-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--primary-light)
+        );
+      }
+      .listing-body {
+        padding: 1.5rem;
+      }
+      .listing-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+      }
+      .listing-location {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-light);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+      }
+      .listing-meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .meta-item label {
+        font-size: 0.8rem;
+        color: var(--text-light);
+        text-transform: uppercase;
+      }
+      .meta-item .value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-dark);
+      }
+      .listing-price {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+      .listing-actions {
+        display: flex;
+        gap: 0.75rem;
+      }
+      .listing-actions button {
+        flex: 1;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font-weight: 600;
+        transition: var(--transition);
+      }
+      .btn-view {
+        background: var(--primary-color);
+        color: white;
+      }
+      .btn-view:hover {
+        background: var(--primary-dark);
+      }
+      .btn-wishlist {
+        background: transparent;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+      }
+      .btn-wishlist:hover {
+        background: var(--primary-color);
+        color: white;
+      }
+      .filter-section {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+      }
+      .filter-group {
+        flex: 1;
+        min-width: 200px;
+      }
+      .filter-group label {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-dark);
+      }
+      .filter-group input,
+      .filter-group select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid var(--border-color);
+        border-radius: 0.5rem;
+        font-size: 0.95rem;
+        transition: var(--transition);
+      }
+      .filter-group input:focus,
+      .filter-group select:focus {
+        border-color: var(--primary-color);
+        outline: none;
+      }
+      .btn-filter {
+        align-self: flex-end;
+        padding: 0.75rem 1.5rem;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .loading {
+        text-align: center;
+        padding: 2rem;
+        color: var(--text-light);
+      }
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid var(--border-color);
+        border-top-color: var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .empty-state {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: var(--text-light);
+      }
+      .empty-state i {
+        font-size: 3rem;
+        color: var(--border-color);
+        margin-bottom: 1rem;
+        display: block;
+      }
+      .detail-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+      .detail-modal.active {
+        display: flex;
+      }
+      .detail-modal-content {
+        background: white;
+        border-radius: 1rem;
+        max-width: 600px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        padding: 2rem;
+      }
+      .detail-modal-close {
+        float: right;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-light);
+        background: none;
+        border: none;
+      }
+      @media (max-width: 768px) {
+        .dashboard-header {
+          flex-direction: column;
+          text-align: center;
+          gap: 1rem;
+        }
+        .user-info {
+          text-align: center;
+        }
+        .filter-section {
+          flex-direction: column;
+        }
+        .filter-group {
+          min-width: 100%;
+        }
+        .listings-grid {
+          grid-template-columns: 1fr;
+        }
+        .tab-btn {
+          padding: 0.75rem 1rem;
+          font-size: 0.9rem;
+        }
+      }
+
+      /* Mobile menu styles */
+      .hamburger-menu {
+        display: block;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .mobile-menu-dropdown {
+        display: none;
+        background: var(--navbar-bg);
+        padding: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+      }
+
+      .user-info-mobile {
+        text-align: left;
+      }
+
+      .user-info-mobile .name {
+        font-weight: 600;
+        color: white;
+        margin-bottom: 0.25rem;
+      }
+
+      .user-info-mobile .email {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .logout-btn-mobile {
+        width: 100%;
+        text-align: left;
+      }
+
+      /* Desktop: Show user info and logout button */
+      .user-info-desktop,
+      .logout-btn-desktop {
+        display: flex;
+      }
+
+      /* Mobile responsiveness */
+      @media (max-width: 768px) {
         .hamburger-menu {
-            display: block;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0;
+          display: block;
         }
-        
-        .mobile-menu-dropdown {
-            display: none;
-            background: var(--navbar-bg);
-            padding: 1rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            flex-direction: column;
-            gap: 1rem;
-            width: 100%;
-        }
-        
-        .user-info-mobile {
-            text-align: left;
-        }
-        
-        .user-info-mobile .name {
-            font-weight: 600;
-            color: white;
-            margin-bottom: 0.25rem;
-        }
-        
-        .user-info-mobile .email {
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.7);
-        }
-        
-        .logout-btn-mobile {
-            width: 100%;
-            text-align: left;
-        }
-        
-        /* Desktop: Show user info and logout button */
+
         .user-info-desktop,
         .logout-btn-desktop {
-            display: flex;
+          display: none;
         }
-        
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-            .hamburger-menu {
-                display: block;
-            }
-            
-            .user-info-desktop,
-            .logout-btn-desktop {
-                display: none;
-            }
-            
-            .mobile-menu-dropdown.active {
-                display: flex;
-            }
-            
-            .navbar-container {
-                flex-wrap: wrap;
-            }
-            
-            .logo-text {
-                font-size: 1.1rem;
-            }
+
+        .mobile-menu-dropdown.active {
+          display: flex;
         }
+
+        .navbar-container {
+          flex-wrap: wrap;
+        }
+
+        .logo-text {
+          font-size: 1.1rem;
+        }
+      }
     </style>
     <script>
-  window.addEventListener('error', e => {
-    console.error('Global error:', e.message);
-  });
-</script>
-</head>
-<body>
+      window.addEventListener("error", (e) => {
+        console.error("Global error:", e.message);
+      });
+    </script>
+  </head>
+  <body>
     <nav class="navbar">
-        <div class="navbar-container">
-            <!-- Logo and Website Name (Left side) -->
-            <div class="logo">
-                <img src="../logo.png" alt="Quick Vantage Logo" class="logo-img" style="height: 40px; width: auto;">
-                <span class="logo-text">Quick Vantage</span>
-            </div>
-            
-            <!-- User Menu (Right side) -->
-            <div class="user-menu">
-                <!-- Desktop: Show user info and 
+      <div class="navbar-container">
+        <!-- Logo and Website Name (Left side) -->
+        <div class="logo">
+          <img
+            src="../logo.png"
+            alt="Quick Vantage Logo"
+            class="logo-img"
+            style="height: 40px; width: auto"
+          />
+          <span class="logo-text">Quick Vantage</span>
+        </div>
+
+        <!-- User Menu (Right side) -->
+        <div class="user-menu">
+          <!-- Desktop: Show user info and 
                   button -->
-                <div class="user-info-desktop">
-                    <div class="name" id="userName">User</div>
-                    <div class="email" id="userEmail">email@example.com</div>
-                </div>
-                <button class="logout-btn logout-btn-desktop" id="logout-btn">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-                
-                <!-- Mobile: Hamburger menu -->
-                <button class="hamburger-menu" id="mobileMenuBtn" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
+          <div class="user-info-desktop">
+            <div class="name" id="userName">User</div>
+            <div class="email" id="userEmail">email@example.com</div>
+          </div>
+          <button class="logout-btn logout-btn-desktop" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+
+          <!-- Mobile: Hamburger menu -->
+          <button
+            class="hamburger-menu"
+            id="mobileMenuBtn"
+            onclick="toggleMobileMenu()"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
         </div>
-        
-        <!-- Mobile menu dropdown -->
-        <div class="mobile-menu-dropdown" id="mobileMenuDropdown">
-            <div class="user-info-mobile">
-                <div class="name" id="userNameMobile">User</div>
-                <div class="email" id="userEmailMobile">email@example.com</div>
-            </div>
-            <button class="logout-btn logout-btn-mobile" id="logout-btn">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
+      </div>
+
+      <!-- Mobile menu dropdown -->
+      <div class="mobile-menu-dropdown" id="mobileMenuDropdown">
+        <div class="user-info-mobile">
+          <div class="name" id="userNameMobile">User</div>
+          <div class="email" id="userEmailMobile">email@example.com</div>
         </div>
+        <button class="logout-btn logout-btn-mobile" id="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
     </nav>
 
     <div class="dashboard-container">
-        <div class="dashboard-header">
-            <h1>Welcome back!</h1>
-            <div style="font-size: 0.9rem; color: var(--text-light);">
-                Last updated: <span id="lastUpdate"></span>
-            </div>
+      <div class="dashboard-header">
+        <h1>Welcome back!</h1>
+        <div style="font-size: 0.9rem; color: var(--text-light)">
+          Last updated: <span id="lastUpdate"></span>
         </div>
+      </div>
 
-        <div class="portfolio-summary">
-            <div class="summary-card">
-                <label>Total Invested</label>
-                <div class="value" id="totalInvested">$0</div>
-                <div class="subtext">Across all investments</div>
-            </div>
-            <div class="summary-card returns">
-                <label>Total Returns</label>
-                <div class="value" id="totalReturns">$0</div>
-                <div class="subtext">Year to date</div>
-            </div>
-            <div class="summary-card investments">
-                <label>Active Investments</label>
-                <div class="value" id="activeInvestments">0</div>
-                <div class="subtext">Current opportunities</div>
-            </div>
-            <div class="summary-card">
-                <label>Average ROI</label>
-                <div class="value" id="averageROI">0%</div>
-                <div class="subtext">Portfolio performance</div>
-            </div>
-        </div>
-
-        <div class="dashboard-tabs">
+      <div class="portfolio-summary">
             
-            <button class="tab-btn active" data-tab="sales-tab">
-                
-                <i class="fas fa-home"></i> Sales
-            </button>
-            <button class="tab-btn" data-tab="investments" id="investmentTab">  
-                <i class="fas fa-chart-line"></i> Investment Opportunities
-                </button>
+          <div class="value" id="totalInvestedDisplay" style="display:none"></div>
+        
+        <div class="summary-card stat-card">
+          <label>Total Invested</label>
+          <div class="value" id="totalInvested totalInvestedDisplay">$125,000</div>
+          <div class="subtext">Across all investments</div>
+        </div>
+        <div class="summary-card returns">
+          <label>Total Returns</label>
+          <div class="value" id="totalReturns">$0</div>
+          <div class="subtext">Year to date</div>
+        </div>
+        <div class="summary-card investments">
+          <label>Active Investments</label>
+          <div class="value" id="activeInvestments">0</div>
+          <div class="subtext">Current opportunities</div>
+        </div>
+        <div class="summary-card">
+          <label>Average ROI</label>
+          <div class="value" id="averageROI">0%</div>
+          <div class="subtext">Portfolio performance</div>
+        </div>
+      </div>
+
+      <div class="dashboard-tabs">
+        <button class="tab-btn active" data-tab="sales-tab">
+          <i class="fas fa-home"></i> Sales
+        </button>
+        <button class="tab-btn" data-tab="investments" id="investmentTab">
+          <i class="fas fa-chart-line"></i> Investment Opportunities
+        </button>
+      </div>
+
+      <div id="sales-tab" class="tab-content active">
+        <h2>Direct Property Sales</h2>
+        <p style="color: var(--text-light); margin-bottom: 1.5rem">
+          Browse properties available for direct purchase in real-time listings.
+        </p>
+
+        <div class="filter-section">
+          <div class="filter-group">
+            <label>City</label>
+            <input
+              type="text"
+              id="salesCityFilter"
+              placeholder="e.g., Lagos, Ibadan"
+            />
+          </div>
+          <div class="filter-group">
+            <label>Type</label>
+            <select id="salesTypeFilter">
+              <option value="">All Types</option>
+              <option value="residential">Residential</option>
+              <option value="commercial">Commercial</option>
+              <option value="industrial">Industrial</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Max Price (USD)</label>
+            <input
+              type="number"
+              id="salesPriceFilter"
+              placeholder="e.g., 200000"
+            />
+          </div>
+          <button class="btn-filter" onclick="filterSales()">Filter</button>
         </div>
 
-        <div id="sales-tab" class="tab-content active">
-
-            <h2>Direct Property Sales</h2>
-            <p style="color: var(--text-light); margin-bottom: 1.5rem;">
-                Browse properties available for direct purchase in real-time listings.
-            </p>
-
-            <div class="filter-section">
-                <div class="filter-group">
-                    <label>City</label>
-                    <input type="text" id="salesCityFilter" placeholder="e.g., Lagos, Ibadan">
-                </div>
-                <div class="filter-group">
-                    <label>Type</label>
-                    <select id="salesTypeFilter">
-                        <option value="">All Types</option>
-                        <option value="residential">Residential</option>
-                        <option value="commercial">Commercial</option>
-                        <option value="industrial">Industrial</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Max Price (USD)</label>
-                    <input type="number" id="salesPriceFilter" placeholder="e.g., 200000">
-                </div>
-                <button class="btn-filter" onclick="filterSales()">Filter</button>
-            </div>
-
-            <div id="salesContainer">
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Loading properties...</p>
-                </div>
-            </div>
+        <div id="salesContainer">
+          <div class="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading properties...</p>
+          </div>
         </div>
-<div class="tab-content" id="investments">
-            <h2>Investment Opportunities</h2>
-            <p style="color: var(--text-light); margin-bottom: 1.5rem;">
-                Structured investment opportunities with ROI, cap rate, and detailed financial metrics.
-            </p>
+      </div>
+      <div class="tab-content" id="investments">
+        <h2>Investment Opportunities</h2>
+        <p style="color: var(--text-light); margin-bottom: 1.5rem">
+          Structured investment opportunities with ROI, cap rate, and detailed
+          financial metrics.
+        </p>
 
-            <div class="filter-section">
-                <div class="filter-group">
-                    <label>City</label>
-                    <input type="text" id="investCityFilter" placeholder="e.g., Lagos, Ibadan">
-                </div>
-                <div class="filter-group">
-                    <label>Type</label>
-                    <select id="investTypeFilter">
-                        <option value="">All Types</option>
-                        <option value="residential_investment">Residential</option>
-                        <option value="commercial_investment">Commercial</option>
-                        <option value="industrial_investment">Industrial</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Min ROI</label>
-                    <select id="investROIFilter">
-                        <option value="">All Returns</option>
-                        <option value="0.05">5%+</option>
-                        <option value="0.07">7%+</option>
-                        <option value="0.09">9%+</option>
-                        <option value="0.10">10%+</option>
-                    </select>
-                </div>
-                <button class="btn-filter" onclick="filterInvestments()">Filter</button>
-            </div>
-
-            <div id="investmentsContainer">
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Loading investment opportunities...</p>
-                </div>
-            </div>
+        <div class="filter-section">
+          <div class="filter-group">
+            <label>City</label>
+            <input
+              type="text"
+              id="investCityFilter"
+              placeholder="e.g., Lagos, Ibadan"
+            />
+          </div>
+          <div class="filter-group">
+            <label>Type</label>
+            <select id="investTypeFilter">
+              <option value="">All Types</option>
+              <option value="residential_investment">Residential</option>
+              <option value="commercial_investment">Commercial</option>
+              <option value="industrial_investment">Industrial</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Min ROI</label>
+            <select id="investROIFilter">
+              <option value="">All Returns</option>
+              <option value="0.05">5%+</option>
+              <option value="0.07">7%+</option>
+              <option value="0.09">9%+</option>
+              <option value="0.10">10%+</option>
+            </select>
+          </div>
+          <button class="btn-filter" onclick="filterInvestments()">
+            Filter
+          </button>
         </div>
+
+        <div id="investmentsContainer">
+          <div class="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading investment opportunities...</p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="detailModal" class="detail-modal">
-        <div class="detail-modal-content">
-            <button class="detail-modal-close" onclick="closeDetailModal()">&times;</button>
-            <div id="modalBody"></div>
-        </div>
+      <div class="detail-modal-content">
+        <button class="detail-modal-close" onclick="closeDetailModal()">
+          &times;
+        </button>
+        <div id="modalBody"></div>
+      </div>
     </div>
 
-    
     <!-- Dashboard application script -->
-<script type="module" src="../js/supabaseClient.js"></script>
-<script type="module" src="../js/api.js"></script>
-<script type="module" src="../js/auth.js"></script>
-<script type="module" src="../js/dashboard.js"></script>
-</body>
+    <script type="module" src="../js/supabaseClient.js"></script>
+    <script type="module" src="../js/api.js"></script>
+    <script type="module" src="../js/auth.js"></script>
+    <script type="module" src="../js/dashboard.js"></script>
+  </body>
 </html>

@@ -1,83 +1,147 @@
+// --- STATE MANAGEMENT ---
+// Load initial investment from localStorage or default to baseline
+let totalInvested = parseFloat(localStorage.getItem('qv_total_invested')) || 125000;
+
 document.addEventListener("DOMContentLoaded", async () => {
-  await initUser();
-  initTabs();
-  initLogout();
-  await loadAndRender();
+    updatePortfolioUI();
+    initTabs();
+    initLogout();
+    setupMobileMenu();
+    await loadAndRender();
 });
 
+function updatePortfolioUI() {
+    const display = document.getElementById('totalInvestedDisplay'); // Ensure this ID is in HTML
+    if (display) {
+        display.textContent = `$${totalInvested.toLocaleString()}`;
+    }
+    localStorage.setItem('qv_total_invested', totalInvested);
+}
+
+// --- MODAL POPULATING ---
+window.openPropertyDetails = (id) => {
+    const property = propertyData.find(p => p.id === id);
+    if (!property) return;
+
+    const modal = document.getElementById('detailModal');
+    const modalBody = document.getElementById('modalBody');
+
+    modalBody.innerHTML = `
+        <div class="modal-detail-wrapper">
+            <h2>${property.title}</h2>
+            <p class="location"><i class="fas fa-map-marker-alt"></i> ${property.city}</p>
+            <hr>
+            <div class="specs-grid">
+                <span><i class="fas fa-bed"></i> 4 Bedrooms</span>
+                <span><i class="fas fa-bath"></i> 3 Bathrooms</span>
+                <span><i class="fas fa-ruler-combined"></i> 2,500 sqft</span>
+            </div>
+            <div class="financial-info">
+                <p><strong>Price:</strong> $${property.price.toLocaleString()}</p>
+                <p><strong>Est. Monthly Rent:</strong> $${(property.price * 0.005).toLocaleString()}</p>
+            </div>
+            <p class="description">Beautiful ${property.type} property located in the heart of ${property.city}. Perfect for long-term appreciation.</p>
+            <div class="modal-actions">
+                <button class="cta-button primary" onclick="alert('Contacting Agent...')">Contact Seller</button>
+                <button class="cta-button secondary" onclick="alert('Added to Favorites')">Save Property</button>
+            </div>
+        </div>
+    `;
+    modal.classList.add('active');
+};
+
+window.closeDetailModal = () => {
+    document.getElementById('detailModal').classList.remove('active');
+};
+
+// --- INVESTMENT LOGIC ---
+window.handleInvest = (id) => {
+    const property = propertyData.find(p => p.id === id);
+    const minInvest = 5000; // Minimum requirement
+    
+    const amount = prompt(`Enter investment amount for ${property.title} (Minimum: $${minInvest}):`);
+    
+    if (amount === null) return; // User cancelled
+
+    const numAmount = parseFloat(amount);
+
+    if (isNaN(numAmount) || numAmount < minInvest) {
+        alert(`Invalid amount. Please enter at least $${minInvest}.`);
+    } else {
+        totalInvested += numAmount;
+        updatePortfolioUI();
+        alert(`Successfully invested $${numAmount.toLocaleString()} in ${property.title}!`);
+    }
+};
+
+// --- UPDATED RENDERING ---
+function renderSales(filters = {}) {
+    const container = document.getElementById("salesContainer");
+    if (!container) return;
+
+    const filtered = propertyData.filter(p => p.category === 'sales'); // Apply existing filters logic here...
+
+    container.innerHTML = filtered.map(p => `
+        <div class="listing-card">
+            <div class="listing-body">
+                <h3>${p.title}</h3>
+                <p>${p.city}</p>
+                <div class="price">$${p.price.toLocaleString()}</div>
+                <button class="btn-view" onclick="openPropertyDetails(${p.id})">View Details</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderInvestments() {
+    const container = document.getElementById("investmentsContainer");
+    const filtered = propertyData.filter(p => p.category === 'invest');
+
+    container.innerHTML = filtered.map(p => `
+        <div class="listing-card">
+            <div class="listing-body">
+                <h3>${p.title}</h3>
+                <p>ROI: ${(p.roi * 100).toFixed(1)}%</p>
+                <button class="btn-view" onclick="handleInvest(${p.id})">Invest Now</button>
+            </div>
+        </div>
+    `).join('');
+}
 let propertyData = [];
 
-async function initUser() {
-  const user = await window.API.auth.getUser();
-  if (!user) {
-    window.location.href = "../index.html";
-    return;
-  }
-  document.getElementById("userName").textContent = user.email.split("@")[0];
-  document.getElementById("welcomeText").textContent = `Welcome, ${user.email.split("@")[0]}`;
-}
 
-async function loadAndRender() {
-  // Use mock data if DB is empty; otherwise use window.API.properties.fetchAll()
-  propertyData = [
-    { id: 1, title: "Lekki Apartment", city: "Lagos", type: "residential", price: 500000, category: "sales", roi: 0.08, status: 100 },
-    { id: 2, title: "Commercial Plaza", city: "Abuja", type: "commercial", price: 2000000, category: "invest", roi: 0.12, status: 60 }
-  ];
-  renderAll();
-}
 
-window.filterSales = () => {
-  const city = document.getElementById("salesCityFilter").value;
-  const maxPrice = document.getElementById("salesPriceFilter").value;
-  renderAll('sales', { city, maxPrice: maxPrice ? parseInt(maxPrice) : Infinity });
-};
 
-window.filterInvestments = () => {
-  const roi = document.getElementById("investROIFilter").value;
-  renderAll('invest', { minROI: roi ? parseFloat(roi) : 0 });
-};
-
-function renderAll(tab = 'both', filters = {}) {
-  if (tab === 'both' || tab === 'sales') {
-    const container = document.getElementById("salesContainer");
-    const filtered = propertyData.filter(p => p.category === 'sales' && 
-      (!filters.city || p.city === filters.city) && 
-      (!filters.maxPrice || p.price <= filters.maxPrice));
-    
-    container.innerHTML = filtered.map(p => `
-      <div class="property-card">
-        <h3>${p.title}</h3>
-        <p>${p.city} | $${p.price.toLocaleString()}</p>
-        <button class="cta-button primary" onclick="alert('Contacting...')">Contact Seller</button>
-        <button class="cta-button secondary">❤️ Favorite</button>
-      </div>`).join('');
-  }
-
-  if (tab === 'both' || tab === 'invest') {
-    const container = document.getElementById("investmentsContainer");
-    const filtered = propertyData.filter(p => p.category === 'invest' && 
-      (!filters.minROI || p.roi >= filters.minROI));
-
-    container.innerHTML = filtered.map(p => `
-      <div class="property-card">
-        <h3>${p.title}</h3>
-        <div class="metrics">ROI: ${p.roi * 100}% | Funding: ${p.status}%</div>
-        <div class="progress-bar"><div style="width:${p.status}%"></div></div>
-        <button class="cta-button primary">Submit Investment</button>
-      </div>`).join('');
-  }
-}
 
 function initTabs() {
   document.querySelectorAll(".tab-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-      document.querySelectorAll(".tab-btn, .tab-content").forEach(el => el.classList.remove("active"));
+      // Update buttons
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-      document.getElementById(btn.dataset.tab).classList.add("active");
+      
+      // Update content
+      document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+      const targetId = btn.getAttribute("data-tab");
+      document.getElementById(targetId).classList.add("active");
     });
   });
 }
 
+function setupMobileMenu() {
+  window.toggleMobileMenu = () => {
+    const menu = document.getElementById("mobileMenuDropdown");
+    menu.classList.toggle("active");
+  };
+}
+
 function initLogout() {
-  document.getElementById("logoutBtn")?.addEventListener("click", () => window.API.auth.logout());
+  // Select all logout buttons (desktop and mobile)
+  const logoutButtons = document.querySelectorAll(".logout-btn");
+  logoutButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      alert("Logging out...");
+      window.location.href = "../index.html";
+    });
+  });
 }
