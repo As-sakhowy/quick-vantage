@@ -152,7 +152,8 @@
             
             <!-- User Menu (Right side) -->
             <div class="user-menu">
-                <!-- Desktop: Show user info and logout button -->
+                <!-- Desktop: Show user info and 
+                  button -->
                 <div class="user-info-desktop">
                     <div class="name" id="userName">User</div>
                     <div class="email" id="userEmail">email@example.com</div>
@@ -174,7 +175,7 @@
                 <div class="name" id="userNameMobile">User</div>
                 <div class="email" id="userEmailMobile">email@example.com</div>
             </div>
-            <button class="logout-btn logout-btn-mobile" onclick="logout()">
+            <button class="logout-btn logout-btn-mobile" id="logout-btn">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </button>
         </div>
@@ -217,7 +218,7 @@
                 
                 <i class="fas fa-home"></i> Sales
             </button>
-            <button class="tab-btn" data-tab="investments">  
+            <button class="tab-btn" data-tab="investments" id="investmentTab">  
                 <i class="fas fa-chart-line"></i> Investment Opportunities
                 </button>
         </div>
@@ -257,7 +258,7 @@
                 </div>
             </div>
         </div>
-<di class="tab-content" id="investments">
+<div class="tab-content" id="investments">
             <h2>Investment Opportunities</h2>
             <p style="color: var(--text-light); margin-bottom: 1.5rem;">
                 Structured investment opportunities with ROI, cap rate, and detailed financial metrics.
@@ -309,7 +310,7 @@
     
     <!-- Dashboard application script -->
 <script type="module" src="../js/api.js"></script>
-<script src="../js/auth.js"></script>
-<script src="../script.js"></script>
+<script type="module" src="../js/auth.js"></script>
+<script type="module" src="../script.js"></script>
 </body>
 </html>
