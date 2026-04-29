@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     // Simulate auth logic
     console.log("Authenticating...");
-    window.location.href = "../pages/dashboard.html"; // Make sure dashboard.html exists
+    window.location.href = "./pages/dashboard.html"; // Make sure dashboard.html exists
   };
 
   document.getElementById("signinForm")?.addEventListener("submit", handleAuth);
